@@ -2,3 +2,4 @@ media/video/*.webm filter=lfs diff=lfs merge=lfs -text
 media/video/*.mp4 filter=lfs diff=lfs merge=lfs -text
 media/video/digitalbraillereader-web.mp4 filter=lfs diff=lfs merge=lfs -text
 media/video/digitalbraillereader-final.webm filter=lfs diff=lfs merge=lfs -text
+media/video/dbr-demo.mp4 filter=lfs diff=lfs merge=lfs -text
