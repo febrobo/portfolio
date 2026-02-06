@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Projects - Febin Wilson</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+            padding: 80px 10%;
+        }
+
+        body.light {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            background: transparent;
+            border: 2px solid #00d4ff;
+            color: #00d4ff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: #00d4ff;
+            color: #000;
+        }
+
+        body.light .theme-toggle {
+            border-color: #007a9e;
+            color: #007a9e;
+        }
+
+        body.light .theme-toggle:hover {
+            background: #007a9e;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            display: inline-block;
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+
+        body.light .back-btn {
+            color: #007a9e;
+        }
+
+        .back-btn:hover {
+            opacity: 0.7;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 80px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .project-item {
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        body.light .project-item {
+            border-color: rgba(0, 0, 0, 0.1);
+            color: #000000;
+        }
+
+        .project-item:hover {
+            border-color: #00d4ff;
+            transform: translateY(-5px);
+        }
+
+        body.light .project-item:hover {
+            border-color: #007a9e;
+        }
+
+        .project-item h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #00d4ff;
+            pointer-events: none;
+        }
+
+        body.light .project-item h3 {
+            color: #007a9e;
+        }
+
+        .project-item p {
+            opacity: 0.8;
+            line-height: 1.6;
+            color: #ffffff;
+            pointer-events: none;
+        }
+
+        body.light .project-item p {
+            color: #000000;
+        }
+
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            body {
+                padding: 60px 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Back to Home</a>
+        <h1>All Projects</h1>
+
+        <div class="projects-grid">
+            <a href="sereact-final.html" class="project-item">
+                <h3>Sereact Robotic Cell Control System</h3>
+                <p>Complete control system for warehouse automation built with ROS 2 Humble, Flask web framework, and Docker. Implemented six integrated components: WMS API handler, barcode scanner, door safety, emergency stop, stack-light controller, and real-time HMI dashboard for robotic bin picking operations.</p>
+            </a>
+
+            <a href="rl-bipedal.html" class="project-item">
+                <h3>Reinforcement Learning for Bipedal Locomotion</h3>
+                <p>Developed and trained reinforcement learning agents for bipedal walking using Isaac Lab simulation environment. Implemented advanced RL algorithms to achieve stable, dynamic locomotion on challenging terrains with robust gait control.</p>
+            </a>
+
+            <a href="senor-turtle.html" class="project-item">
+                <h3>Señor Turtle: Search and Rescue Robotics</h3>
+                <p>Enhanced robotic capabilities for search and rescue missions using the Turtlebot3 platform with modified m-MPPI control algorithm. Achieved significant improvements in navigation and mapping accuracy using SLAM technology.</p>
+            </a>
+
+            <a href="digital-braille-reader.html" class="project-item">
+                <h3>Digital Braille Reader</h3>
+                <p>Designed and developed an assistive technology device that converts digital text to tactile Braille output. Integrated microcontrollers, actuators, and sensor systems to create an accessible reading solution for visually impaired users.</p>
+            </a>
+
+            <a href="f1-predictor.html" class="project-item">
+                <h3>F1 2025 Championship Winner Prediction using Machine Learning</h3>
+                <p>Built predictive models to forecast the 2025 F1 World Championship winner using historical race data (2020-2025). Implemented feature engineering for track-specific performance, season momentum, and recent form. Trained Random Forest classifiers achieving 70.77% accuracy in win prediction. Final prediction: Lando Norris (431 points, 93.8% confidence).</p>
+            </a>
+
+            <a href="ppo-sac-control.html" class="project-item">
+                <h3>Evaluating PPO and SAC Algorithms for Continuous Control</h3>
+                <p>Comprehensive analysis of Proximal Policy Optimization (PPO) and Soft Actor-Critic (SAC) algorithms using CarRacing-v2 and BipedalWalker-v3 environments. Compared performance, sample efficiency, and training stability across different continuous control tasks.</p>
+            </a>
+
+            <a href="rtab-slam.html" class="project-item">
+                <h3>RTAB-MAP SLAM</h3>
+                <p>Facilitated autonomous navigation in unknown environments using RTAB algorithm for Simultaneous Localization and Mapping. Compared performance using various map datasets in indoor and outdoor environments.</p>
+            </a>
+
+            <a href="ophthalmic-robot.html" class="project-item">
+                <h3>Dynamics of Robotic Arm Motion for Ophthalmic Surgery</h3>
+                <p>Investigated dynamics of robotic arm motion to enhance surgical precision in ophthalmic operations. Developed comprehensive mathematical model and utilized CAD software for simulation.</p>
+            </a>
+
+            <a href="3r-arm.html" class="project-item">
+                <h3>Dynamic Simulation of 3R Robotic Arm under Gravity</h3>
+                <p>Computational modeling and dynamic simulation of a 3R robotic arm influenced by gravitational forces using Euler-Lagrange formulation. Provided insights into temporal evolution of arm's position and orientation.</p>
+            </a>
+
+            <a href="bike-abs.html" class="project-item">
+                <h3>Bike Anti-Lock Braking Systems Performance</h3>
+                <p>Studied ABS performance in different weather conditions and created simulation model of various control methods. Combined two different controllers to achieve dynamic and real-time performance.</p>
+            </a>
+
+            <a href="ball-launcher.html" class="project-item">
+                <h3>Design & Development of Ball Launcher</h3>
+                <p>Re-designed and re-developed Ball Launcher Machines with current technology to make them affordable for all. Fabricated fully functional tennis ball launcher and received O grade with commendation from Department.</p>
+            </a>
+
+            <a href="ni-coating.html" class="project-item">
+                <h3>Investigation of Ni-Based Coating for High-Temperature Sliding Wear</h3>
+                <p>Researched NiCrBSiFe coating performance under sliding wear at 500°C with lubrication. Utilized thermal spraying to coat powder on 316L stainless steel substrate and studied microstructure using SEM.</p>
+            </a>
+
+            <a href="surface-properties.html" class="project-item">
+                <h3>Surface Properties Enhancement for Wear Resistance</h3>
+                <p>Studied various aspects of enhancing surface properties using thermal sprayed techniques. Presented at international conference (ICNTE) and successfully demonstrated improved wear resistance.</p>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('light');
+            const btn = document.querySelector('.theme-toggle');
+            btn.textContent = document.body.classList.contains('light') ? '🌙 Dark' : '☀️ Light';
+            localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+        }
+
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light');
+            document.querySelector('.theme-toggle').textContent = '🌙 Dark';
+        }
+    </script>
+</body>
+</html>

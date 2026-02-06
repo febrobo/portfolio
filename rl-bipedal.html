@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reinforcement Learning for Bipedal Locomotion - Febin Wilson</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            color: #000000;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            opacity: 0.7;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 70vh;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #000000;
+            padding: 0 10%;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 10%;
+        }
+
+        .white-bg {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .dark-bg {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .colored-bg {
+            background: #f5f5f5;
+            color: #000000;
+        }
+
+        .accent-bg {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: #ffffff;
+        }
+
+        .pink-bg {
+            background: #fef5f5;
+            color: #000000;
+        }
+
+        /* Meta Bar */
+        .meta-bar {
+            background: #0a0a0a;
+            color: #ffffff;
+            padding: 50px 10%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 50px;
+            text-align: center;
+        }
+
+        .meta-item h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .meta-item p {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #FF6B6B;
+        }
+
+        /* Section Headers */
+        .section-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: #e74c3c;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .dark-bg .section-label {
+            color: #FF6B6B;
+        }
+
+        .accent-bg .section-label {
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        .colored-bg .section-label {
+            color: #e74c3c;
+        }
+
+        .pink-bg .section-label {
+            color: #e74c3c;
+        }
+
+        h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 30px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin: 40px 0 20px 0;
+            color: #FF6B6B;
+        }
+
+        .white-bg h3,
+        .colored-bg h3,
+        .pink-bg h3 {
+            color: #e74c3c;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 20px;
+        }
+
+        li {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        /* Quote Box */
+        .quote-box {
+            background: #ffffff;
+            padding: 60px;
+            border-radius: 20px;
+            margin: 60px 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-bg .quote-box {
+            background: #2a2a2a;
+            box-shadow: none;
+        }
+
+        .accent-bg .quote-box {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: none;
+        }
+
+        .quote-box p {
+            font-size: 1.5rem;
+            font-style: italic;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .dark-bg .quote-box p,
+        .accent-bg .quote-box p {
+            color: #ffffff;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            color: #333;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .dark-bg .tag {
+            background: #333;
+            color: #00d4ff;
+        }
+
+        .accent-bg .tag {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        /* Grid Layouts */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            padding: 40px;
+            background: #f8f8f8;
+            border-radius: 15px;
+        }
+
+        .dark-bg .feature-card {
+            background: #2a2a2a;
+        }
+
+        .accent-bg .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #e74c3c;
+        }
+
+        .dark-bg .feature-card h3 {
+            color: #00d4ff;
+        }
+
+        .accent-bg .feature-card h3 {
+            color: #ffffff;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: transparent;
+            border: 2px solid #FF6B6B;
+            color: #FF6B6B;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #FF6B6B;
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 968px) {
+            section {
+                padding: 60px 5%;
+            }
+
+            .meta-bar {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="projects.html" class="back-btn">← Back to Projects</a>
+    
+    <!-- Hero -->
+    <div class="hero">
+        <h1>Dynamic Multimodal Locomotion: PPO for Bipedal Gait Training</h1>
+    </div>
+
+    <!-- Meta Bar -->
+    <div class="meta-bar">
+        <div class="meta-item">
+            <h3>ROLE</h3>
+            <p>RL Researcher</p>
+        </div>
+        <div class="meta-item">
+            <h3>LAB</h3>
+            <p>Silicon Synapse Lab</p>
+        </div>
+        <div class="meta-item">
+            <h3>DURATION</h3>
+            <p>Dec 2024 - Apr 2025</p>
+        </div>
+        <div class="meta-item">
+            <h3>TEAM SIZE</h3>
+            <p>Individual (Mentored)</p>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <section class="white-bg">
+        <div class="section-label">PROJECT OVERVIEW</div>
+        <h2>Teaching robots to walk through reinforcement learning</h2>
+        <p>This project presents a reinforcement learning-based framework for training dynamic bipedal locomotion on the Harpy robot—a six-jointed bipedal platform developed at Northeastern University's Silicon Synapse Lab. Using Proximal Policy Optimization (PPO) within NVIDIA's Isaac Sim, I trained a robust walking policy in massively parallel simulation environments, achieving stable, symmetric gaits with promising sim-to-real transferability.</p>
+        <p>Bipedal locomotion stands as one of the most sophisticated forms of movement in robotics, requiring precise control, dynamic balance, and adaptability to uncertain environments. Traditional control approaches like Zero Moment Point (ZMP) planning often rely on accurate modeling and tend to fall short when faced with real-world disturbances. In contrast, reinforcement learning provides a model-free, data-driven alternative that allows robots to learn effective locomotion strategies through trial and error.</p>
+        <p>Working independently under the mentorship of Prof. Alireza Ramezani, Dr. Rifat Sipahi, PhD candidate Shreyansh Pitroda, and Lab Assistant Arjun Viswanathan, I reverse-engineered RL control logic from Boston Dynamics' quadruped robot Spot and adapted these principles for bipedal walking. This project represents the foundation for deploying learned policies onto real-world robotic platforms with low-latency performance.</p>
+        
+        <div class="tags">
+            <span class="tag">Reinforcement Learning</span>
+            <span class="tag">PPO Algorithm</span>
+            <span class="tag">Isaac Sim</span>
+            <span class="tag">Isaac Lab</span>
+            <span class="tag">Python</span>
+            <span class="tag">PyTorch</span>
+            <span class="tag">Bipedal Locomotion</span>
+            <span class="tag">Domain Randomization</span>
+            <span class="tag">Reward Engineering</span>
+        </div>
+    </section>
+
+    <!-- Harpy Robot -->
+    <section class="dark-bg">
+        <div class="section-label">THE HARPY ROBOT</div>
+        <h2>Meet Harpy: A thruster-assisted bipedal platform</h2>
+        <p>Harpy is a custom-designed bipedal robot developed at the Silicon Synapse Lab, featuring six actuated joints—three per leg (hip, knee, and ankle)—while the feet remain passive and rigidly attached. The robot is equipped with thrusters that assist with balance and aerial maneuvers, though this project focused exclusively on ground-based walking without thruster assistance.</p>
+        
+        <div style="max-width: 800px; margin: 50px auto;">
+            <img src="media/pic/harpy-look.jpeg" alt="Harpy Bipedal Robot" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+            <p style="text-align: center; margin-top: 20px; font-size: 1rem; opacity: 0.8;">The Harpy bipedal robot with labeled joint structure: hip, frontal, knee, and ankle joints forming the 6-DOF leg configuration</p>
+        </div>
+        
+        <h3>Robot Specifications</h3>
+        <ul>
+            <li><strong>Degrees of Freedom:</strong> 6 active joints (3 per leg: hip, knee, ankle)</li>
+            <li><strong>Joint Types:</strong> Revolute joints with position and torque control</li>
+            <li><strong>Sensors:</strong> IMU (orientation, angular velocity), Joint encoders (position, velocity), Contact sensors (foot-ground detection)</li>
+            <li><strong>Actuation:</strong> Delayed PD controller with 5ms latency to mimic real-world response</li>
+            <li><strong>Additional Features:</strong> Thrusters for aerial maneuvers (not used in this walking task)</li>
+        </ul>
+        
+        <p>The symmetric joint configuration allows consistent control strategies across both legs, while contact sensors provide critical feedback for stance phase detection and reward calculation during training.</p>
+    </section>
+
+    <!-- Background -->
+    <section class="white-bg">
+        <div class="section-label">BACKGROUND & MOTIVATION</div>
+        <h2>Why reinforcement learning for bipedal walking?</h2>
+        <p>Training bipedal robots to walk effectively involves addressing several complex challenges: underactuation, nonlinear dynamics, unpredictable environments, and sensor-actuator delays. Traditional approaches have significant limitations when exposed to real-world variability.</p>
+        
+        <h3>Limitations of Traditional Control</h3>
+        <ul>
+            <li><strong>Zero Moment Point (ZMP) Control:</strong> Heavily dependent on accurate system models and performs poorly with real-world uncertainties</li>
+            <li><strong>Inverted Pendulum Models:</strong> Simplified representations that don't capture full complexity of bipedal dynamics</li>
+            <li><strong>Trajectory Optimization:</strong> Computationally expensive and requires extensive manual tuning for each terrain type</li>
+        </ul>
+        
+        <h3>The Reinforcement Learning Advantage</h3>
+        <p>With the rise of deep learning, reinforcement learning has emerged as a promising alternative. Instead of relying on manually crafted control strategies, RL enables robots to learn locomotion behaviors directly through trial-and-error interaction with the environment. This eliminates the need for extensive controller design and allows for adaptive behavior in dynamic situations.</p>
+        
+        <p>However, the success of RL methods depends critically on algorithm selection and training stability. For this project, I chose Proximal Policy Optimization (PPO) due to its stability, sample efficiency, and compatibility with Isaac Lab's parallel training capabilities.</p>
+    </section>
+
+    <!-- Challenge -->
+    <section class="colored-bg">
+        <div class="section-label">DESIGN CHALLENGE</div>
+        <h2>Achieving natural, robust bipedal walking</h2>
+        <p>The primary challenge was to develop a learning framework that could train the Harpy robot to walk naturally, stably, and efficiently—while ensuring the learned behaviors would transfer from simulation to real hardware. This required solving multiple interconnected problems simultaneously.</p>
+        
+        <h3>Technical Challenges</h3>
+        <ul>
+            <li><strong>High-Dimensional Control:</strong> Coordinating 6 joints simultaneously with proper phase timing for alternating foot contact</li>
+            <li><strong>Reward Engineering:</strong> Designing a reward function that encourages walking without creating undesirable behaviors like hopping or shuffling</li>
+            <li><strong>Sim-to-Real Gap:</strong> Ensuring policies trained in simulation remain effective on physical hardware with actuator delays and sensor noise</li>
+            <li><strong>Sample Efficiency:</strong> Learning effective gaits requires millions of training steps—impossible to collect on physical robots</li>
+            <li><strong>Stability vs. Progress:</strong> Balancing exploration (trying new movements) with maintaining balance (not falling over)</li>
+        </ul>
+        
+        <p>The solution involved combining PPO's stable learning algorithm with careful reward engineering, domain randomization for robustness, and massively parallel simulation to accelerate training. The system needed to learn coordination, balance, and velocity tracking simultaneously—a complex multi-objective optimization problem.</p>
+    </section>
+
+    <!-- PPO Algorithm -->
+    <section class="dark-bg">
+        <div class="section-label">REINFORCEMENT LEARNING ALGORITHM</div>
+        <h2>Proximal Policy Optimization (PPO)</h2>
+        <p>PPO belongs to the policy-gradient family and offers a reliable tradeoff between performance and robustness, especially in continuous control tasks like bipedal walking. I selected PPO over alternatives like DDPG, TD3, and SAC due to its superior stability and ease of implementation.</p>
+        
+        <h3>Why PPO for Bipedal Locomotion?</h3>
+        <ul>
+            <li><strong>Stable Updates:</strong> Clipped objective prevents large, destabilizing policy changes that could break walking patterns</li>
+            <li><strong>Sample Efficient:</strong> Multiple epochs of learning from each batch of collected experience</li>
+            <li><strong>Continuous Actions:</strong> Natural fit for outputting target joint positions as continuous values</li>
+            <li><strong>Parallelization:</strong> Works excellently with Isaac Lab's GPU-accelerated parallel environments</li>
+        </ul>
+        
+        <h3>Mathematical Foundation</h3>
+        <p>PPO improves the policy while avoiding sudden changes through a clipped surrogate function. The algorithm constrains how much the policy can change between updates using a clipping parameter (ε = 0.2), preventing catastrophic performance drops that plague other RL algorithms.</p>
+        
+        <h3>Implementation Configuration</h3>
+        <ul>
+            <li><strong>Learning Rate:</strong> 1 × 10⁻³</li>
+            <li><strong>Clipping Parameter:</strong> 0.2 (limits policy updates)</li>
+            <li><strong>Generalized Advantage Estimation (GAE):</strong> λ = 0.95</li>
+            <li><strong>Epochs per Update:</strong> 5 (multiple passes over collected data)</li>
+            <li><strong>Value Function Loss Coefficient:</strong> 2.0</li>
+            <li><strong>Entropy Coefficient:</strong> 0.01 (encourages exploration)</li>
+            <li><strong>Discount Factor:</strong> γ = 0.99 (long-term reward consideration)</li>
+        </ul>
+        
+        <p>The policy network produces joint target positions which are passed through a delayed Proportional-Derivative (PD) controller. Noise buffers were added to mimic sensor and actuator uncertainties, helping the policy generalize to real-world deployment conditions.</p>
+    </section>
+
+    <!-- Isaac Sim Training -->
+    <section class="white-bg">
+        <div class="section-label">TRAINING INFRASTRUCTURE</div>
+        <h2>Massively parallel training in Isaac Sim</h2>
+        <p>Training was conducted using Isaac Lab, a reinforcement learning framework built upon NVIDIA Isaac Sim. Isaac Sim offers high-fidelity physics simulation and GPU-accelerated computation, enabling the deployment of massive parallel environments that dramatically accelerate policy learning.</p>
+        
+        <h3>Training Setup</h3>
+        <ul>
+            <li><strong>Parallel Environments:</strong> 1024 simultaneous robot instances</li>
+            <li><strong>Simulation Frequency:</strong> 500 Hz (0.002 second timesteps)</li>
+            <li><strong>Control Frequency:</strong> 50 Hz (policy queries every 0.02 seconds)</li>
+            <li><strong>Decimation Factor:</strong> 10 (10 simulation steps per control step)</li>
+            <li><strong>Physics Engine:</strong> NVIDIA PhysX for accurate rigid-body dynamics</li>
+            <li><strong>Episode Length:</strong> Maximum 400 steps per episode</li>
+        </ul>
+        
+        <div style="max-width: 900px; margin: 50px auto;">
+            <img src="media/pic/harpy-sim.jpeg" alt="Isaac Sim 1024 Environments" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+            <p style="text-align: center; margin-top: 20px; font-size: 1rem; opacity: 0.8;">1024 Harpy robot instances training simultaneously in Isaac Sim, each learning independently in parallel environments</p>
+        </div>
+        
+        <h3>Benefits of Massive Parallelization</h3>
+        <p>Running 1024 environments simultaneously provides several critical advantages:</p>
+        <ul>
+            <li><strong>Data Collection Speed:</strong> Collect 1024× more experience per wall-clock second compared to single environment</li>
+            <li><strong>Faster Convergence:</strong> More diverse experiences lead to better generalization and faster policy improvement</li>
+            <li><strong>Exploration Diversity:</strong> Each environment explores slightly different strategies, increasing chances of discovering effective gaits</li>
+            <li><strong>Statistical Stability:</strong> Averaging across many environments reduces variance in gradient estimates</li>
+        </ul>
+        
+        <p>This parallelization infrastructure enabled training the walking policy to completion in hours rather than weeks, making iterative development and reward tuning practically feasible.</p>
+    </section>
+
+    <!-- System Architecture -->
+    <section class="colored-bg">
+        <div class="section-label">CONTROL ARCHITECTURE</div>
+        <h2>PPO implementation and control flow</h2>
+        <p>The control system integrates real-time sensor feedback, observation processing, neural policy inference, delayed actuation, and reward evaluation—creating a closed-loop system for learning and control.</p>
+        
+        <h3>Observation Space (48 Dimensions)</h3>
+        <p>The robot receives proprioceptive information from multiple sources:</p>
+        <ul>
+            <li><strong>Base Linear Velocity:</strong> 3D velocity in body frame (vₓ, vᵧ, vᵧ)</li>
+            <li><strong>Base Angular Velocity:</strong> 3D angular rates (ωₓ, ωᵧ, ωᵧ)</li>
+            <li><strong>Base Orientation:</strong> Quaternion representation (4D)</li>
+            <li><strong>Projected Gravity:</strong> Gravity vector in body frame (3D)</li>
+            <li><strong>Joint Positions:</strong> Current angles for all 6 joints</li>
+            <li><strong>Joint Velocities:</strong> Angular rates for all 6 joints</li>
+            <li><strong>Previous Actions:</strong> Last commanded joint positions (6D)</li>
+            <li><strong>Commanded Velocity:</strong> Desired forward and yaw rates (2D)</li>
+        </ul>
+        
+        <h3>Policy Network Architecture</h3>
+        <p>The observation vector is processed by a neural network with three fully connected hidden layers (512, 256, 128 neurons) using ReLU activations. The network splits into two heads:</p>
+        <ul>
+            <li><strong>Actor Head:</strong> Generates 6-dimensional continuous action vector (target joint positions)</li>
+            <li><strong>Critic Head:</strong> Estimates value function for computing advantages during PPO updates</li>
+        </ul>
+        
+        <h3>Delayed PD Control</h3>
+        <p>Actions don't directly control the robot. Instead, they pass through a delayed Proportional-Derivative controller that simulates realistic actuation latency:</p>
+        <ul>
+            <li>Actions stored in FIFO buffer with 5ms delay</li>
+            <li>PD controller computes torques: τ = Kₚ(θₜₐᵣ - θcurrent) + Kd(ωₜₐᵣ - ωcurrent)</li>
+            <li>Torques clipped to safety limits before application</li>
+        </ul>
+        
+        <p>This delay mechanism encourages the policy to adapt to response lag, dramatically improving sim-to-real transfer by training the robot to anticipate and compensate for actuation delays encountered in physical hardware.</p>
+    </section>
+
+    <!-- Reward Engineering -->
+    <section class="dark-bg">
+        <div class="section-label">REWARD ENGINEERING</div>
+        <h2>Shaping natural walking through rewards</h2>
+        <p>Achieving natural and stable walking required a carefully designed reward function refined through multiple iterations. The reward structure was modular, with each component assigned specific weights that collectively shaped the learning objective.</p>
+        
+        <h3>Positive Reward Components</h3>
+        <ul>
+            <li><strong>Base Linear Velocity (Weight: 8.0):</strong> Encourages tracking commanded velocity using exponential kernel—smooth reward landscape that peaks when actual velocity matches command</li>
+            <li><strong>Bipedal Gait (Weight: 20.0):</strong> HIGHEST WEIGHT. Rewards temporal coordination where one foot is in air while other maintains ground contact. Prevents synchronized hopping and establishes rhythmic walking</li>
+            <li><strong>Air Time (Weight: 8.0):</strong> Encourages appropriate swing phases with foot clearance, while limiting excessive flight time that causes bouncy, unstable gaits</li>
+            <li><strong>Contact Time (Weight: 8.0):</strong> Shapes stance phases, ensuring sufficient ground support during weight transfer between legs</li>
+        </ul>
+        
+        <h3>Penalty Components</h3>
+        <ul>
+            <li><strong>Air Time Variance (Weight: -1.5):</strong> Discourages asymmetric gaits by penalizing differences in air time between feet, preventing "limping" behaviors</li>
+            <li><strong>Base Orientation (Weight: -5.0):</strong> Maintains upright posture by discouraging excessive leaning. More tolerant of slight forward lean (natural in walking) while strongly penalizing side-to-side rocking</li>
+            <li><strong>Base Motion (Weight: -4.0):</strong> Combines vertical bouncing (80% weighting) and angular velocity (20%) to promote energy-efficient, smooth locomotion</li>
+            <li><strong>Action Smoothness (Weight: -2.0):</strong> Prevents high-frequency oscillations by discouraging large changes in consecutive actions, creating fluid joint trajectories</li>
+            <li><strong>Foot Slip (Weight: -2.0):</strong> Targets horizontal foot movement during ground contact, encouraging stable foot placement with good traction</li>
+        </ul>
+        
+        <h3>Reward Tuning Journey</h3>
+        <p>During early training, several problematic behaviors emerged:</p>
+        <ul>
+            <li>Limping gaits favoring one leg over the other</li>
+            <li>Idle standing (more stable than attempting to walk)</li>
+            <li>Foot dragging with insufficient clearance</li>
+            <li>Excessive vertical bouncing and body oscillations</li>
+        </ul>
+        
+        <p>Through iterative tuning, I progressively adjusted weights—increasing bipedal gait reward from 10.0 to 20.0, introducing foot slip penalties, balancing velocity tracking with action smoothness, and strengthening base motion penalties. The final reward structure produced smooth, symmetric gait cycles with improved coordination and upright posture.</p>
+    </section>
+
+    <!-- Domain Randomization -->
+    <section class="white-bg">
+        <div class="section-label">SIM-TO-REAL TRANSFER</div>
+        <h2>Domain randomization for robustness</h2>
+        <p>To ensure the learned policy would work on real hardware—not just in perfect simulation—I incorporated comprehensive domain randomization techniques. These methods introduce controlled variability during training, forcing the policy to generalize across diverse physical conditions.</p>
+        
+        <h3>Randomized Physical Parameters</h3>
+        <ul>
+            <li><strong>Base Mass:</strong> ±10% variation from nominal</li>
+            <li><strong>Base Inertia:</strong> ±20% scaling to simulate payload changes</li>
+            <li><strong>Friction Coefficient:</strong> Uniformly sampled from [0.7, 1.0]</li>
+            <li><strong>Joint Damping:</strong> Varied between [0.01, 0.1]</li>
+            <li><strong>Motor Strength:</strong> ±10% scaling to mimic battery voltage variations</li>
+        </ul>
+        
+        <h3>Initialization Randomization</h3>
+        <ul>
+            <li><strong>Reset Position:</strong> X and Y coordinates randomized within ±0.5m</li>
+            <li><strong>Reset Orientation:</strong> Pitch ±0.7 rad, Yaw ±π rad (full rotation)</li>
+            <li><strong>Initial Velocities:</strong> Small random perturbations to break symmetry</li>
+        </ul>
+        
+        <h3>Runtime Perturbations</h3>
+        <ul>
+            <li><strong>External Disturbances:</strong> Random push forces applied every 8-12 seconds</li>
+            <li><strong>Sensor Noise:</strong> Gaussian noise on joint angle and velocity readings</li>
+            <li><strong>Command Noise:</strong> Perturbations on commanded forward and yaw velocities</li>
+            <li><strong>Optional Terrain:</strong> Sinusoidal elevation changes for uneven ground</li>
+        </ul>
+        
+        <h3>Impact on Policy Robustness</h3>
+        <p>Domain randomization resulted in dramatic improvements:</p>
+        <ul>
+            <li>Greater resilience to mass, inertia, and friction variations</li>
+            <li>Consistent performance despite actuation delays and sensor noise</li>
+            <li>Improved gait symmetry and foot placement accuracy</li>
+            <li>Successful recovery from external push disturbances</li>
+        </ul>
+        
+        <p>Without randomization, policies overfitted to specific simulation conditions and failed catastrophically when deployed under different physical parameters. Domain randomization proved critical for preparing Harpy to walk in the real world.</p>
+    </section>
+
+    <!-- Training Results -->
+    <section class="dark-bg">
+        <div class="section-label">TRAINING RESULTS</div>
+        <h2>Policy learning and performance analysis</h2>
+        <p>After training for over 10,000 policy updates across 1024 parallel environments, the PPO policy successfully learned stable, coordinated bipedal walking. The results demonstrate clear progression from unstable exploration to controlled locomotion.</p>
+        
+        <h3>Reward Progression: Two-Phase Learning</h3>
+        <p>The training revealed distinctive two-phase learning:</p>
+        <ul>
+            <li><strong>Exploration Phase (0–7,000 iterations):</strong> Reward remained low (5-10 units) with minimal improvement. The policy struggled to discover effective locomotion strategies in the high-dimensional action space.</li>
+            <li><strong>Exploitation Phase (7,000–9,000 iterations):</strong> Dramatic exponential increase with rewards rising from 10 to over 100—a 10-fold improvement! This inflection point marks when the robot transitioned from unstable exploration to coordinated walking.</li>
+            <li><strong>Peak Performance:</strong> Maximum reward of 101.8 achieved at iteration 9,000</li>
+        </ul>
+        
+        <h3>Velocity Stabilization Analysis</h3>
+        <p>Analysis of base velocity components revealed three distinct phases:</p>
+        <ul>
+            <li><strong>Initial Instability (0-75 steps):</strong> High-amplitude oscillations with vertical velocity spikes reaching 3 m/s—highly unstable gait with the robot struggling to maintain balance</li>
+            <li><strong>Transition Phase (75-125 steps):</strong> Critical stabilization transition with notable reduction in oscillation amplitudes</li>
+            <li><strong>Stabilized Phase (125-250 steps):</strong> All velocity components consistently within narrow bands (±0.5 m/s), representing substantial stability improvement</li>
+        </ul>
+        
+        <p>This progressive stabilization directly correlates with the policy's improved coordination of the bipedal gait cycle, successfully internalizing both stability constraints and efficient locomotion patterns.</p>
+    </section>
+
+    <!-- Media Section -->
+    <section class="colored-bg">
+        <div class="section-label">SYSTEM DEMONSTRATION</div>
+        <h2>Trained policy in action</h2>
+        <p style="margin-bottom: 50px;">Watch the Harpy robot execute the learned walking policy after training. The simulation demonstrates stable bipedal locomotion with coordinated leg movements, proper foot alternation, and velocity tracking.</p>
+        
+        <!-- Video Demonstration -->
+        <div style="max-width: 900px; margin: 0 auto; background: #ffffff; padding: 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+            <video controls style="width: 100%; border-radius: 10px;">
+                <source src="media/video/harpy-sim.webm" type="video/webm">
+                Your browser does not support the video tag.
+            </video>
+            <p style="text-align: center; margin-top: 20px; font-size: 1rem; color: #666;">Full walking demonstration showing the trained PPO policy executing stable bipedal gait with proper alternating foot contact</p>
+        </div>
+    </section>
+
+    <!-- My Contribution -->
+    <section class="dark-bg">
+        <div class="section-label">MY CONTRIBUTION</div>
+        <h2>Individual research and implementation</h2>
+        <p>This project was completed independently as part of my Master's in Robotics at Northeastern University, under the guidance of Prof. Alireza Ramezani and the Silicon Synapse Lab team. The work served as my graduate project, demonstrating end-to-end reinforcement learning research from problem formulation to implementation and analysis.</p>
+        
+        <h3>Key Contributions</h3>
+        <ul>
+            <li><strong>Custom Environment Development:</strong> Built complete task environment within Isaac Lab for bipedal locomotion training, including observation space design, action space configuration, and episode management</li>
+            <li><strong>PPO Training Framework:</strong> Implemented scalable, domain-randomized training pipeline using 1024 parallel environments, optimizing for GPU utilization and sample efficiency</li>
+            <li><strong>Reward Engineering:</strong> Designed modular reward structure promoting stable locomotion, balanced posture, and consistent foot-ground contact through iterative testing and refinement</li>
+            <li><strong>Delayed PD Implementation:</strong> Integrated actuation delay mechanism to mimic real-world latency and improve sim-to-real transferability</li>
+            <li><strong>Results Analysis:</strong> Conducted comprehensive evaluation of training performance, identifying key learning phases and areas for improvement</li>
+        </ul>
+        
+        <h3>Reverse-Engineering Inspiration</h3>
+        <p>My approach was inspired by how Boston Dynamics' Spot robot achieves robust locomotion. I studied their control principles and adapted those concepts for bipedal walking on Harpy. This reverse-engineering process taught me how to think about hierarchical control, where high-level policies command behaviors that lower-level controllers execute with appropriate compliance.</p>
+    </section>
+
+    <!-- Key Features -->
+    <section class="pink-bg">
+        <div class="section-label">KEY FEATURES</div>
+        <h2>System capabilities</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Massively Parallel Training</h3>
+                <p>1024 simultaneous robot instances in Isaac Sim running at 500 Hz simulation frequency, enabling rapid policy learning and diverse experience collection</p>
+            </div>
+            <div class="feature-card">
+                <h3>PPO Algorithm</h3>
+                <p>Stable reinforcement learning with clipped objective, GAE advantage estimation, and entropy regularization for robust bipedal control</p>
+            </div>
+            <div class="feature-card">
+                <h3>Modular Reward Structure</h3>
+                <p>Carefully tuned multi-component rewards balancing velocity tracking, gait symmetry, stability, and energy efficiency</p>
+            </div>
+            <div class="feature-card">
+                <h3>Domain Randomization</h3>
+                <p>Comprehensive randomization of physical parameters, initialization conditions, and runtime perturbations for sim-to-real transfer</p>
+            </div>
+            <div class="feature-card">
+                <h3>Delayed PD Control</h3>
+                <p>5ms actuation delay simulation to model real-world hardware latency, improving policy robustness for physical deployment</p>
+            </div>
+            <div class="feature-card">
+                <h3>High-Fidelity Physics</h3>
+                <p>NVIDIA PhysX engine with accurate rigid-body dynamics, contact modeling, and GPU-accelerated computation</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Limitations & Future Work -->
+    <section class="white-bg">
+        <div class="section-label">LIMITATIONS & FUTURE WORK</div>
+        <h2>Challenges encountered and next steps</h2>
+        
+        <h3>Current Limitations</h3>
+        <ul>
+            <li><strong>Knee Joint Tracking:</strong> Analysis revealed commanded knee positions exceeded 50 radians (physically unrealistic) while actual positions remained around 2-3 radians. This indicates absence of action normalization in the policy network output layer.</li>
+            <li><strong>Left-Right Asymmetry:</strong> Uneven behavior between legs likely stems from initialization bias in policy network weights that became self-reinforcing during training.</li>
+            <li><strong>Long Exploration Phase:</strong> 7,000 iterations (78% of training) with minimal reward improvement before breakthrough—indicates inefficient exploration of high-dimensional action space.</li>
+            <li><strong>Flat Terrain Only:</strong> Current policy trained exclusively on flat ground. Real-world deployment requires adaptation to stairs, slopes, and uneven surfaces.</li>
+        </ul>
+        
+        <h3>Proposed Improvements</h3>
+        <ul>
+            <li><strong>Action Space Constraints:</strong> Incorporate tanh activation with proper scaling in policy output layer to limit commands to physically achievable joint angle ranges</li>
+            <li><strong>Curriculum Learning:</strong> Progressive difficulty increase from flat ground to stairs to undulating terrain, reducing exploration requirements</li>
+            <li><strong>Demonstration Data:</strong> Initialize policy with human demonstrations or classical controller outputs to bypass lengthy exploration phase</li>
+            <li><strong>Gait Symmetry Rewards:</strong> Add explicit left-right symmetry constraints to prevent limping behaviors</li>
+            <li><strong>Enhanced Model Fidelity:</strong> Improve simulation accuracy for joint compliance, actuation saturation, and realistic contact dynamics</li>
+            <li><strong>Multimodal Terrain:</strong> Train policies that seamlessly transition across various terrains including slopes, stairs, and dynamic surfaces</li>
+        </ul>
+    </section>
+
+    <!-- Results -->
+    <section class="accent-bg">
+        <div class="section-label">RESULTS & IMPACT</div>
+        <h2>Successfully learned stable bipedal walking</h2>
+        <p>This project successfully demonstrated that reinforcement learning can train complex bipedal locomotion behaviors in simulation with promising sim-to-real transfer characteristics. The trained policy achieved stable, coordinated walking with proper gait alternation and velocity tracking.</p>
+        
+        <div class="quote-box">
+            <p>"This work establishes a foundation for dynamic locomotion in real-world environments, demonstrating the power of combining PPO, massive parallelization, and domain randomization for learning robust robotic control policies."</p>
+        </div>
+        
+        <h3>Key Achievements</h3>
+        <ul>
+            <li>Successfully trained walking policy from scratch using only reward signals</li>
+            <li>Achieved 10-fold reward improvement during exploitation phase (10 → 101.8)</li>
+            <li>Demonstrated clear velocity stabilization with oscillations reduced by over 80%</li>
+            <li>Implemented complete RL pipeline from environment design to policy deployment</li>
+            <li>Created modular, reusable reward structure applicable to other legged robots</li>
+            <li>Validated domain randomization techniques for sim-to-real transfer</li>
+            <li>Contributed to ongoing research at Silicon Synapse Lab for Harpy deployment</li>
+        </ul>
+        
+        <p>The project deepened my understanding of reinforcement learning, reward shaping, and the critical importance of sim-to-real considerations in robotics. This work will serve as the foundation for future research on multimodal terrain adaptation and eventually deploying learned policies on the physical Harpy robot.</p>
+    </section>
+
+    <!-- Skills -->
+    <section class="white-bg">
+        <div class="section-label">SKILLS DEMONSTRATED</div>
+        <h2>Technical expertise applied</h2>
+        
+        <!-- Skills Bars -->
+        <div style="margin: 50px 0 60px 0;">
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Reinforcement Learning (PPO, Policy Gradients)</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 95%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Isaac Sim & Isaac Lab</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 90%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Python & PyTorch</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 93%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Reward Engineering & Shaping</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 88%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Domain Randomization Techniques</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 85%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Bipedal Robot Control & Kinematics</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 87%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">GPU-Accelerated Simulation</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 82%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Data Analysis & Visualization</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 84%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Research Documentation & Writing</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 90%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tags">
+            <span class="tag">Reinforcement Learning</span>
+            <span class="tag">Proximal Policy Optimization (PPO)</span>
+            <span class="tag">Isaac Sim</span>
+            <span class="tag">Isaac Lab</span>
+            <span class="tag">Python Programming</span>
+            <span class="tag">PyTorch</span>
+            <span class="tag">Bipedal Locomotion</span>
+            <span class="tag">Domain Randomization</span>
+            <span class="tag">Reward Engineering</span>
+            <span class="tag">GPU Computing</span>
+            <span class="tag">Control Systems</span>
+            <span class="tag">Research & Analysis</span>
+        </div>
+    </section>
+
+    <!-- Download Link -->
+    <section class="colored-bg" style="text-align: center;">
+        <h2 style="margin-bottom: 40px;">Download the complete project report</h2>
+        <a href="media/doc/harpy-rl-report.pdf" download class="cta-button" style="background: #FF6B6B; color: white; border-color: #FF6B6B;">
+            Download Project Report (PDF) ↓
+        </a>
+        <p style="margin-top: 30px; font-size: 1rem; opacity: 0.7;">Comprehensive graduate project report with implementation details, analysis, and results</p>
+        <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.6; font-style: italic;">Note: GitHub repository is private as this is ongoing research at Silicon Synapse Lab</p>
+    </section>
+
+</body>
+</html>

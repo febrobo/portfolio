@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Braille Reader - Febin Wilson</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            color: #000000;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            opacity: 0.7;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 70vh;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #000000;
+            padding: 0 10%;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 10%;
+        }
+
+        .white-bg {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .dark-bg {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .colored-bg {
+            background: #f5f5f5;
+            color: #000000;
+        }
+
+        .accent-bg {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: #ffffff;
+        }
+
+        .pink-bg {
+            background: #fef5f5;
+            color: #000000;
+        }
+
+        /* Meta Bar */
+        .meta-bar {
+            background: #0a0a0a;
+            color: #ffffff;
+            padding: 50px 10%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 50px;
+            text-align: center;
+        }
+
+        .meta-item h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .meta-item p {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #FF6B6B;
+        }
+
+        /* Section Headers */
+        .section-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: #e74c3c;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .dark-bg .section-label {
+            color: #FF6B6B;
+        }
+
+        .accent-bg .section-label {
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        .colored-bg .section-label {
+            color: #e74c3c;
+        }
+
+        .pink-bg .section-label {
+            color: #e74c3c;
+        }
+
+        h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 30px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin: 40px 0 20px 0;
+            color: #FF6B6B;
+        }
+
+        .white-bg h3,
+        .colored-bg h3,
+        .pink-bg h3 {
+            color: #e74c3c;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 20px;
+        }
+
+        li {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        /* Quote Box */
+        .quote-box {
+            background: #ffffff;
+            padding: 60px;
+            border-radius: 20px;
+            margin: 60px 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-bg .quote-box {
+            background: #2a2a2a;
+            box-shadow: none;
+        }
+
+        .accent-bg .quote-box {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: none;
+        }
+
+        .quote-box p {
+            font-size: 1.5rem;
+            font-style: italic;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .dark-bg .quote-box p,
+        .accent-bg .quote-box p {
+            color: #ffffff;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            color: #333;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .dark-bg .tag {
+            background: #333;
+            color: #00d4ff;
+        }
+
+        .accent-bg .tag {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        /* Grid Layouts */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            padding: 40px;
+            background: #f8f8f8;
+            border-radius: 15px;
+        }
+
+        .dark-bg .feature-card {
+            background: #2a2a2a;
+        }
+
+        .accent-bg .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #e74c3c;
+        }
+
+        .dark-bg .feature-card h3 {
+            color: #00d4ff;
+        }
+
+        .accent-bg .feature-card h3 {
+            color: #ffffff;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: transparent;
+            border: 2px solid #FF6B6B;
+            color: #FF6B6B;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #FF6B6B;
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 968px) {
+            section {
+                padding: 60px 5%;
+            }
+
+            .meta-bar {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="projects.html" class="back-btn">← Back to Projects</a>
+    
+    <!-- Hero -->
+    <div class="hero">
+        <h1>Digital Braille Reader</h1>
+    </div>
+
+    <!-- Meta Bar -->
+    <div class="meta-bar">
+        <div class="meta-item">
+            <h3>ROLE</h3>
+            <p>Software & Hardware Integration</p>
+        </div>
+        <div class="meta-item">
+            <h3>CONTEXT</h3>
+            <p>Assistive Robotics</p>
+        </div>
+        <div class="meta-item">
+            <h3>DURATION</h3>
+            <p>Sep 2024 - Dec 2024</p>
+        </div>
+        <div class="meta-item">
+            <h3>TEAM SIZE</h3>
+            <p>4 Members</p>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <section class="white-bg">
+        <div class="section-label">PROJECT OVERVIEW</div>
+        <h2>Enhancing accessibility through tactile technology</h2>
+        <p>This device enhances information accessibility for visually impaired individuals by converting digital text into tactile braille patterns. The portable, battery-powered device utilizes six vibration generators to encode and communicate alphabet letters through finger-based tactile sensation. The system incorporates Bluetooth connectivity for seamless file transfer from a smartphone and includes onboard memory for PDF storage.</p>
+        <p>Employing a sense-plan-act paradigm with full autonomy, the device operates through explicit user actions, mapping input to the braille alphabet across high, mid, and low-level controls. This project addresses the UN Convention on the Rights of Persons with Disabilities' mandate for equal access to information and assistive technologies.</p>
+        <p>While existing electronic braille displays are available, they are often prohibitively expensive ($700-$4000) and bulky (keyboard-sized with 20-40 cell refreshable displays). Our proposed device offers a more compact, affordable alternative—mimicking a smartphone form factor—potentially improving quality of life and autonomy for visually impaired users in an increasingly digital world.</p>
+        
+        <div class="tags">
+            <span class="tag">Assistive Technology</span>
+            <span class="tag">ESP32-S3</span>
+            <span class="tag">Bluetooth Low Energy</span>
+            <span class="tag">Flutter</span>
+            <span class="tag">3D Printing</span>
+            <span class="tag">SolidWorks</span>
+            <span class="tag">Embedded Systems</span>
+            <span class="tag">Firmware Development</span>
+        </div>
+        
+        <!-- Skills Bars -->
+        <div style="margin-top: 80px;">
+            <h3 style="color: #e74c3c; margin-bottom: 40px;">Project Competencies</h3>
+            
+            <div style="margin-bottom: 30px;">
+                <p style="font-size: 1rem; margin-bottom: 10px; font-weight: 500;">Embedded Systems Design & Firmware</p>
+                <div style="background: #e0e0e0; height: 8px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 92%; height: 100%;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <p style="font-size: 1rem; margin-bottom: 10px; font-weight: 500;">Bluetooth Low Energy (BLE) Protocol</p>
+                <div style="background: #e0e0e0; height: 8px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 88%; height: 100%;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <p style="font-size: 1rem; margin-bottom: 10px; font-weight: 500;">CAD & 3D Printing (SolidWorks)</p>
+                <div style="background: #e0e0e0; height: 8px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 85%; height: 100%;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <p style="font-size: 1rem; margin-bottom: 10px; font-weight: 500;">Mobile App Development (Flutter)</p>
+                <div style="background: #e0e0e0; height: 8px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 80%; height: 100%;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <p style="font-size: 1rem; margin-bottom: 10px; font-weight: 500;">Hardware Integration & Testing</p>
+                <div style="background: #e0e0e0; height: 8px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 90%; height: 100%;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <p style="font-size: 1rem; margin-bottom: 10px; font-weight: 500;">User-Centered Design & Accessibility</p>
+                <div style="background: #e0e0e0; height: 8px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 87%; height: 100%;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <p style="font-size: 1rem; margin-bottom: 10px; font-weight: 500;">System Architecture & Protocol Design</p>
+                <div style="background: #e0e0e0; height: 8px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 83%; height: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Background -->
+    <section class="dark-bg">
+        <div class="section-label">BACKGROUND & MOTIVATION</div>
+        <h2>Bridging the accessibility gap in digital reading</h2>
+        <p>In today's increasingly digital world, access to information is crucial for participation in society, education, and personal development. However, for individuals with visual impairments, this access can be significantly challenging. The United Nations Convention on the Rights of Persons with Disabilities (2006) emphasized equal access to information for disabled people, including the use of assistive technologies to enhance communication and information accessibility.</p>
+        
+        <h3>The Problem with Current Solutions</h3>
+        <p>Braille, a tactile reading and writing system developed by Louis Braille in 1824, has long been a vital tool for visually impaired individuals to access written information. While electronic braille displays exist in the market, they often come with significant limitations:</p>
+        <ul>
+            <li><strong>Cost Barrier:</strong> Current devices range from $700 to $4000, making them inaccessible to many users</li>
+            <li><strong>Size and Portability:</strong> Typically keyboard-sized with 20-40 cell refreshable displays, limiting everyday use</li>
+            <li><strong>Limited Functionality:</strong> Many devices lack seamless integration with modern digital platforms</li>
+            <li><strong>Complexity:</strong> Often require extensive training and setup for effective use</li>
+        </ul>
+        
+        <h3>Our Vision</h3>
+        <p>To address these challenges, we developed a novel, portable digital braille reader that bridges the gap between traditional braille and modern digital text. Our device is designed to be compact (smartphone-sized), battery-powered, affordable, and easily integrated with existing digital workflows. By leveraging vibrotactile feedback and wireless connectivity, we created an accessible solution that empowers visually impaired individuals to consume digital content independently.</p>
+    </section>
+
+    <!-- Challenge -->
+    <section class="white-bg">
+        <div class="section-label">DESIGN CHALLENGE</div>
+        <h2>Creating an intuitive, portable braille interface</h2>
+        <p>The primary challenge was developing a device that could translate digital text into tactile braille patterns in real-time while remaining compact, affordable, and energy-efficient. Unlike traditional refreshable braille displays that use mechanical pins, we needed to create a vibrotactile system that users could understand intuitively through touch alone.</p>
+        
+        <h3>Technical Challenges</h3>
+        <ul>
+            <li><strong>Vibration Isolation:</strong> Preventing vibration propagation through the casing that would make it difficult to distinguish which buzzer was active</li>
+            <li><strong>Braille Encoding:</strong> Mapping 7-bit ASCII characters to 6-bit braille patterns efficiently for real-time translation</li>
+            <li><strong>Bluetooth Reliability:</strong> Maintaining stable BLE connection during high-throughput data transfer without disconnections</li>
+            <li><strong>Power Management:</strong> Balancing continuous Bluetooth advertising with battery life constraints</li>
+            <li><strong>User Experience:</strong> Designing an interface that blind users could navigate without visual cues</li>
+            <li><strong>Ergonomics:</strong> Creating a compact form factor that fits comfortably in one hand for extended reading sessions</li>
+        </ul>
+        
+        <p>The solution required integrating mechanical design (3D-printed casing), firmware development (ESP32-S3 microcontroller), wireless communication (BLE protocol), and mobile app development (Flutter framework)—all working together to create a seamless assistive technology experience.</p>
+    </section>
+
+    <!-- Hardware Design -->
+    <section class="colored-bg">
+        <div class="section-label">HARDWARE DESIGN</div>
+        <h2>3D-printed ergonomic enclosure</h2>
+        <p>The physical encasing for the braille reader was designed using SolidWorks and fabricated using PrusaSlicer Version 2.8.1. The casing was engineered to be easy to hold, small enough to carry around, and comfortable to use with one hand for extended periods.</p>
+        
+        <div style="max-width: 800px; margin: 50px auto;">
+            <img src="media/pic/dbr1.png" alt="Braille Reader Casing Design" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+            <p style="text-align: center; margin-top: 20px; font-size: 1rem; opacity: 0.8;"><strong>Figure 1:</strong> Braille Reader casing designed in SolidWorks showing support structure and rounded edges for ergonomic grip</p>
+        </div>
+        
+        <h3>Design Considerations</h3>
+        <ul>
+            <li><strong>Ergonomic Form Factor:</strong> Support structure and rounded edges designed to provide secure grip and comfort during long operations</li>
+            <li><strong>Vibration Isolation:</strong> Casing material carefully selected to dampen vibration propagation, allowing users to distinguish each buzzer individually</li>
+            <li><strong>Component Layout:</strong> Strategic placement of six buzzers corresponding to the six dots of standard braille cells</li>
+            <li><strong>Durability:</strong> Structural integrity verified through multiple drop tests, withstanding high drops without cracks or visible damage</li>
+            <li><strong>Portability:</strong> Compact smartphone-like form factor enabling discrete, everyday carry</li>
+        </ul>
+        
+        <h3>Vibrational Mechanics</h3>
+        <p>One critical design element was ensuring that users could distinguish which buzzer was creating a vibration, especially when multiple buzzers were active simultaneously. The casing was engineered to dampen incoming signals appropriately, preventing cross-talk between buzzers while maintaining sufficient tactile feedback intensity for reliable character recognition.</p>
+        <p>The support structure incorporated internal baffles and material selection optimized for vibration isolation, ensuring each of the six buzzers could be independently perceived by the user's fingertips.</p>
+    </section>
+
+    <!-- Firmware Architecture -->
+    <section class="dark-bg">
+        <div class="section-label">FIRMWARE ARCHITECTURE</div>
+        <h2>High-speed embedded processing on ESP32-S3</h2>
+        <p>The firmware was meticulously designed for high-speed processing, energy efficiency, and asynchronous handling of tactile output. The microcontroller used was a TinyS3 (ESP32-S3 Board), chosen for its robust BLE capabilities, low power consumption, and sufficient processing power for real-time braille encoding.</p>
+        
+        <div style="max-width: 600px; margin: 40px auto;">
+            <img src="media/pic/dbr2.png" alt="TinyS3 ESP32-S3 Board" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(255,255,255,0.1);">
+            <p style="text-align: center; margin-top: 20px; font-size: 1rem; opacity: 0.8;"><strong>Figure 2:</strong> TinyS3 (ESP32-S3 Board) microcontroller used for firmware processing and BLE communication</p>
+        </div>
+        
+        <h3>Braille Encoding System</h3>
+        <p>Upon receiving data encoded as 7-bit ASCII values, the firmware utilizes a highly optimized lookup table stored in flash memory to transform these into 6-bit braille representations suitable for driving the device's array of buzzers. This transformation is performed with minimal computational overhead, leveraging precomputed mappings to ensure real-time responsiveness.</p>
+        <p>The 6-bit braille pattern directly maps to the six buzzers, where each bit position corresponds to one of the standard braille dot positions. For example, the letter 'A' in braille (dot 1) activates only the first buzzer, while 'W' (dots 2-4-5-6) activates four buzzers simultaneously.</p>
+        
+        <h3>Asynchronous Message Queue</h3>
+        <p>To manage output efficiently, the firmware implements a non-blocking, asynchronous queuing system. Incoming messages are enqueued and dispatched sequentially to the buzzers, allowing for parallel processing of input and output tasks. This asynchronous design prevents system overload by ensuring that newly received messages do not interrupt ongoing operations, thus maintaining consistent and reliable tactile feedback.</p>
+        <p>The queue architecture enables smooth reading experiences even when receiving long text streams, buffering incoming characters and serving them at an appropriate rate for user comprehension.</p>
+        
+        <h3>Bluetooth Low Energy Implementation</h3>
+        <p>BLE communication is integral to the firmware's functionality. The device operates as a BLE peripheral, dynamically advertising itself on available channels (RF37, RF38, RF39). Upon establishing a connection, the firmware employs a connection-handling protocol, ensuring a stable link with the host device. The connection is maintained even under conditions of high data throughput, preventing unintended disconnection during read/write operations.</p>
+        <p>To further enhance energy efficiency, the ESP32-S3 enters a low-power state during idle periods, and BLE advertising intervals are optimized to conserve battery power. Real-time responsiveness is achieved through precise timing controls, ensuring tactile feedback is delivered at an appropriate frequency for user comprehension.</p>
+        
+        <h3>Error Handling</h3>
+        <p>The firmware gracefully handles invalid inputs, ignoring unsupported characters without interrupting the tactile output. This ensures a smooth reading experience even when encountering non-standard characters or formatting symbols in digital documents.</p>
+    </section>
+
+    <!-- App Design -->
+    <section class="white-bg">
+        <div class="section-label">MOBILE APPLICATION</div>
+        <h2>Flutter-based companion app for iOS and Android</h2>
+        <p>The application was designed with a focus on usability, reliability, and intuitive interaction. Leveraging the Flutter framework, we implemented the Bluetooth Low Energy (BLE) communication protocol to optimize performance. This approach minimized system load by awakening devices only when necessary, reducing the number of active radio frequency channels to enhance connection speed, and transmitting minimal data packets to ensure efficiency across all systems.</p>
+        
+        <h3>BLE Communication Flow</h3>
+        <p>The app uses custom-built software to facilitate BLE scanning and device discovery for Android and iOS platforms. This involves leveraging platform-specific Bluetooth APIs while providing a unified interface for users. For connection, we start the scan with custom filters so that unwanted Bluetooth devices do not populate the user interface.</p>
+        <p>The phone scans the primary advertising channels (RF37, RF38, RF39) and listens for any advertising device that fits the user's filtering preferences. Once connected over BLE, we ensure not to send any unnecessary information to save bandwidth and power on the device. The user is then sent to another screen where they can facilitate the connection and serve the braille reader with encoded information.</p>
+        <p>The information is sent as a 7-bit ASCII value over the available advertising channel and encoded on the device into 6-bit braille characters for activation on the buzzers.</p>
+        
+        <div style="max-width: 900px; margin: 50px auto;">
+            <img src="media/pic/dbr3.png" alt="App Flow Diagram" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+            <p style="text-align: center; margin-top: 20px; font-size: 1rem; opacity: 0.8;"><strong>Figure 3:</strong> App flow diagram of a typical user experience showing connection and data transmission process</p>
+        </div>
+        
+        <h3>User Experience Design</h3>
+        <ul>
+            <li><strong>Intuitive Pairing:</strong> Simple device discovery and one-tap connection process</li>
+            <li><strong>Text Input:</strong> Multiple input methods including manual typing, PDF file upload, and clipboard paste</li>
+            <li><strong>Reading Control:</strong> Pause, resume, and speed adjustment for comfortable reading pace</li>
+            <li><strong>Connection Status:</strong> Clear visual indicators showing device connectivity and battery status</li>
+        </ul>
+    </section>
+
+    <!-- System Architecture -->
+    <section class="colored-bg">
+        <div class="section-label">SYSTEM ARCHITECTURE</div>
+        <h2>Complete end-to-end information flow</h2>
+        
+        <h3>Sense-Plan-Act Paradigm</h3>
+        <p>The device operates through a classical robotics control paradigm adapted for assistive technology:</p>
+        <ul>
+            <li><strong>Sense:</strong> User initiates text input via smartphone app (typing, PDF upload, or file selection)</li>
+            <li><strong>Plan:</strong> App processes text, converts to 7-bit ASCII, and streams over BLE to device</li>
+            <li><strong>Act:</strong> Firmware decodes to 6-bit braille patterns and activates corresponding buzzers for tactile output</li>
+        </ul>
+        
+        <h3>Data Pipeline</h3>
+        <p>The complete information flow from digital text to tactile output:</p>
+        <ul>
+            <li><strong>Input Layer:</strong> User selects text source (manual entry, PDF, or clipboard) via Flutter app</li>
+            <li><strong>Transmission Layer:</strong> Text encoded as 7-bit ASCII values and transmitted via BLE advertising channel</li>
+            <li><strong>Processing Layer:</strong> ESP32-S3 firmware performs lookup table conversion from 7-bit to 6-bit braille</li>
+            <li><strong>Queue Management:</strong> Asynchronous message queue buffers characters for sequential output</li>
+            <li><strong>Output Layer:</strong> Six buzzers activated according to braille pattern, providing tactile feedback to user's fingers</li>
+        </ul>
+        
+        <h3>Component Integration</h3>
+        <ul>
+            <li><strong>ESP32-S3 Microcontroller:</strong> Central processing unit managing BLE communication and buzzer control</li>
+            <li><strong>Six Vibration Motors:</strong> Buzzers positioned to correspond with standard 6-dot braille cell layout</li>
+            <li><strong>Battery Management:</strong> Rechargeable battery with power optimization for extended operation</li>
+            <li><strong>3D-Printed Enclosure:</strong> Ergonomic casing providing structural support and vibration isolation</li>
+            <li><strong>Flutter Mobile App:</strong> Cross-platform application for text input and device control</li>
+        </ul>
+    </section>
+
+    <!-- My Contribution -->
+    <section class="dark-bg">
+        <div class="section-label">MY INDIVIDUAL CONTRIBUTION</div>
+        <h2>3D CAD design and hardware integration</h2>
+        <p>I was responsible for the complete mechanical design and hardware integration of the Digital Braille Reader. This involved designing the 3D-printed enclosure in SolidWorks, optimizing it for ergonomics, vibration isolation, and component fit, then fabricating the physical prototype using PrusaSlicer for 3D printing.</p>
+        <p>My work focused on ensuring the device was comfortable to hold and use with one hand, mimicking a smartphone form factor for portability. I conducted extensive testing on vibration dampening properties of different casing materials and geometries to ensure users could distinguish individual buzzers despite vibration propagation through the enclosure.</p>
+        <p>Additionally, I assisted with hardware integration—mounting the ESP32-S3 board, wiring the six vibration motors, and ensuring proper electrical connections. I conducted durability testing including multiple drop tests to validate the structural integrity of the 3D-printed casing. Throughout the project, I collaborated closely with the firmware and app development teams to ensure the mechanical design supported the electronic components and user interaction requirements.</p>
+    </section>
+
+    <!-- Technical Implementation -->
+    <section class="white-bg">
+        <div class="section-label">TECHNICAL IMPLEMENTATION</div>
+        <h2>Building the complete assistive system</h2>
+        
+        <h3>1. Braille Encoding Algorithm</h3>
+        <p>The core of the system is the efficient mapping between 7-bit ASCII characters and 6-bit braille patterns. The firmware maintains a precomputed lookup table in flash memory that directly translates incoming characters to buzzer activation patterns. This eliminates the need for real-time computation, ensuring instantaneous response when characters are received.</p>
+        <p>For example:</p>
+        <ul>
+            <li>Letter 'A' (ASCII 65) → Braille pattern 100000 → Buzzer 1 activates</li>
+            <li>Letter 'B' (ASCII 66) → Braille pattern 110000 → Buzzers 1 and 2 activate</li>
+            <li>Letter 'W' (ASCII 87) → Braille pattern 011110 → Buzzers 2, 3, 4, and 5 activate</li>
+        </ul>
+        
+        <h3>2. BLE Connection Management</h3>
+        <p>The device continuously advertises on primary BLE channels, making itself discoverable to the companion app. Once a connection is established, the firmware transitions from advertising mode to connected mode, dedicating resources to maintaining the link and processing incoming data.</p>
+        <p>Connection parameters are optimized for:</p>
+        <ul>
+            <li>Minimal latency for real-time text streaming</li>
+            <li>Sufficient bandwidth for continuous character transmission</li>
+            <li>Low power consumption through adaptive advertising intervals</li>
+            <li>Robust reconnection protocols for seamless recovery from temporary disconnections</li>
+        </ul>
+        
+        <h3>3. Asynchronous Output Control</h3>
+        <p>The firmware implements a non-blocking queue system where incoming 7-bit values are converted to 6-bit patterns and placed in a FIFO (First-In-First-Out) buffer. A separate output task sequentially processes the queue, activating buzzers according to each braille pattern and maintaining appropriate timing between characters for user comprehension.</p>
+        <p>This architecture allows the system to continue receiving new characters while still outputting previous ones, preventing message loss and maintaining smooth reading flow even during burst transmissions.</p>
+    </section>
+
+    <!-- Results -->
+    <section class="colored-bg">
+        <div class="section-label">TESTING & RESULTS</div>
+        <h2>Validated performance and user feedback</h2>
+        <p>The Braille Reader demonstrated exceptional performance in terms of usability, efficiency, and reliability across multiple testing scenarios. Users were able to access the app and intuitively use it to connect to the Bluetooth device. Once connected, the device sustained a reliable connection until the Braille reader was turned off.</p>
+        
+        <div style="max-width: 900px; margin: 50px auto;">
+            <img src="media/pic/dbr4.png" alt="App to Braille Reader Connection" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+            <p style="text-align: center; margin-top: 20px; font-size: 1rem; opacity: 0.8;"><strong>Figure 4:</strong> App to braille reader connection visualization showing interface, ESP32 board, and modeled casing assembly</p>
+        </div>
+        
+        <h3>Connection Reliability</h3>
+        <p>In terms of Bluetooth connectivity, the device maintained a stable connection with the host device during prolonged testing. The connection was not disrupted by environmental interference or signal overloads (such as long pieces of text being passed through), and reconnections were seamless, ensuring an uninterrupted user experience. The efficient use of Bluetooth Low Energy (BLE) ensured minimal power consumption without compromising responsiveness or reliability.</p>
+        
+        <h3>Encoding Accuracy</h3>
+        <p>The asynchronous handling of messages contributed significantly to the device's performance, as incoming data was processed and served to the buzzers without delay. The 6-bit mapping from 7-bit input values was consistently accurate, and the buzzers responded in real-time to the encoded data. There were no issues with system lag, ensuring smooth and accurate transmission while using the braille reader combined with our custom-made app.</p>
+        
+        <h3>Mechanical Performance</h3>
+        <p>The casing design, produced with PrusaSlicer, provided an ergonomic and compact solution that enhanced the overall user experience. The device was easy to hold, comfortable to use with one hand, and light enough for extended periods of use without causing discomfort. The structural integrity of the casing was verified through multiple drop tests, withstanding high drops without succumbing to cracks or visible damage.</p>
+        
+        <h3>Overall Assessment</h3>
+        <p>The Braille Reader not only met expectations for functionality and reliability but also demonstrated strong potential as a foundation for future assistive technology development. The well-designed firmware, efficient Bluetooth communication, and thoughtful casing resulted in a product that represents a sufficient starting point for future braille encoder applications. During the testing phase, there were no failures or dropped connections encountered, proving this is a strong foundation for future development and possible adoption into commercial products.</p>
+        
+        <!-- Video Demonstration -->
+        <div style="margin-top: 80px;">
+            <h3 style="text-align: center; color: #e74c3c; margin-bottom: 30px;">System Demonstration Video</h3>
+            <p style="text-align: center; margin-bottom: 40px; font-size: 1.1rem;">Watch the complete Digital Braille Reader system in operation - from app connection to tactile braille output</p>
+            
+            <div style="max-width: 900px; margin: 0 auto; background: #ffffff; padding: 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <video controls style="width: 100%; border-radius: 10px;">
+                    <source src="media/video/dbr-demo.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p style="text-align: center; margin-top: 20px; font-size: 1rem; color: #666;">Full system demonstration showing Flutter app, BLE connection, and vibrotactile braille output on the device</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Limitations -->
+    <section class="dark-bg">
+        <div class="section-label">LIMITATIONS & FUTURE WORK</div>
+        <h2>Known constraints and improvement opportunities</h2>
+        
+        <h3>1. Bandwidth Limitations</h3>
+        <p>Although BLE is reliable and fast, it has bandwidth limitations that may be difficult to overcome depending on what type of information is intended to be streamed. For example, large PDFs would need to be encoded and sent piecewise over the system in order to not overload the communication channel. Systems like these would require significant work and testing, as the more information sent, the higher the likelihood of a transmission failure.</p>
+        
+        <h3>2. Vibration Dampening Challenges</h3>
+        <p>One of the main complaints received from users was difficulty in discerning which buzzer created a vibration, especially in scenarios where multiple buzzers were active simultaneously. This issue arose because vibrations generated by the buzzers tended to propagate through the casing material, making it challenging for users to pinpoint which specific buzzer was pulsing.</p>
+        <p>As a result, users implicitly relied on the onboard LEDs to identify active buzzers, as the light cues provided clear indication of which buzzer was vibrating at any given time. This issue created a reliance on visual cues in order to use the system, which is not an accessible solution for blind people.</p>
+        
+        <h3>3. Mobile App Accessibility</h3>
+        <p>Both Android and iOS devices offer specialized accessibility options designed to meet the needs of blind and visually impaired users, including screen readers and voice control. In our app, we began integrating these accessibility features to ensure our platform is usable by blind or visually impaired users. This includes incorporating code changes to support screen readers, enabling the app to read aloud text content and provide verbal descriptions of interactive elements.</p>
+        <p>However, we identified several areas requiring further attention to improve user experience. Specifically, some buttons and interactive elements do not get correctly presented or identified in screen reader mode. As a result, navigating through even the most basic functions of the app becomes challenging for users relying on auditory cues alone.</p>
+        
+        <h3>Proposed Improvements</h3>
+        <ul>
+            <li><strong>Enhanced Vibration Isolation:</strong> Redesign internal casing structure with improved baffles and damping materials to better isolate each buzzer's vibration</li>
+            <li><strong>Alternative Actuation Methods:</strong> Explore piezoelectric actuators or solenoids for more discrete, localized tactile feedback</li>
+            <li><strong>Improved Data Compression:</strong> Implement efficient encoding schemes for transmitting large documents over BLE without exceeding bandwidth limits</li>
+            <li><strong>Full Screen Reader Support:</strong> Complete accessibility code refinement to ensure all interactive elements are properly labeled and navigable through auditory cues</li>
+            <li><strong>Multi-line Display:</strong> Expand from single-character output to multi-character display for faster reading speeds</li>
+            <li><strong>Onboard PDF Processing:</strong> Add local PDF parsing capabilities to reduce reliance on phone-side processing</li>
+        </ul>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="pink-bg">
+        <div class="section-label">KEY FEATURES</div>
+        <h2>System capabilities</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Portable Form Factor</h3>
+                <p>Smartphone-sized 3D-printed enclosure designed for one-handed operation and everyday carry, dramatically improving portability over traditional keyboard-sized displays</p>
+            </div>
+            <div class="feature-card">
+                <h3>Wireless Connectivity</h3>
+                <p>Bluetooth Low Energy protocol enables seamless file transfer from smartphones to device with optimized power consumption and stable connections</p>
+            </div>
+            <div class="feature-card">
+                <h3>Real-Time Encoding</h3>
+                <p>Optimized lookup table converts 7-bit ASCII to 6-bit braille patterns with minimal computational overhead for instant tactile feedback</p>
+            </div>
+            <div class="feature-card">
+                <h3>Vibrotactile Feedback</h3>
+                <p>Six strategically positioned buzzers encode complete braille alphabet through finger-based tactile sensation, replacing expensive mechanical pin arrays</p>
+            </div>
+            <div class="feature-card">
+                <h3>Cross-Platform App</h3>
+                <p>Flutter-based mobile application providing unified interface for both iOS and Android with custom BLE device discovery and filtering</p>
+            </div>
+            <div class="feature-card">
+                <h3>Cost-Effective Solution</h3>
+                <p>Dramatically more affordable than commercial alternatives ($700-$4000) while maintaining essential functionality for digital text access</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Contributions -->
+    <section class="dark-bg">
+        <div class="section-label">TEAM CONTRIBUTIONS</div>
+        <h2>Collaborative development</h2>
+        <p>This project was a collaborative effort among four team members from Northeastern University, with clearly defined responsibilities:</p>
+        <ul>
+            <li><strong>Febin Wilson (Me):</strong> Designed complete 3D-printed enclosure in SolidWorks, optimized for ergonomics and vibration isolation. Conducted hardware integration and durability testing. Collaborated on component layout and mechanical design requirements.</li>
+            <li><strong>Raphael Dias:</strong> Developed embedded firmware for ESP32-S3 microcontroller, implemented BLE communication protocol, designed asynchronous message queue system, and created optimized lookup table for braille encoding.</li>
+            <li><strong>Ege Ozgul:</strong> Built Flutter mobile application for iOS and Android platforms, implemented custom BLE scanning and device discovery, designed user interface and interaction flow.</li>
+            <li><strong>Kedar Shelar:</strong> Assisted with system integration testing, contributed to accessibility feature development, and helped with technical documentation and presentation materials.</li>
+        </ul>
+        <p>All team members contributed to the final presentation and technical report, presenting their respective work while assisting others with testing and troubleshooting. The collaborative nature of this project was essential to integrating mechanical, firmware, and software systems into a cohesive assistive technology solution.</p>
+    </section>
+
+    <!-- Skills -->
+    <section class="white-bg">
+        <div class="section-label">SKILLS DEMONSTRATED</div>
+        <h2>Technical expertise applied</h2>
+        
+        <!-- Skills Bars -->
+        <div style="margin: 50px 0 60px 0;">
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Computer-Aided Design (SolidWorks)</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 95%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">3D Printing & Fabrication</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 90%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Hardware Integration & Assembly</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 88%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Embedded Systems (ESP32)</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 82%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Ergonomic Design & User Testing</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 85%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Mechanical Testing & Validation</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 87%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Cross-Functional Collaboration</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 92%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Accessibility-Focused Design</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 83%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tags">
+            <span class="tag">Assistive Technology</span>
+            <span class="tag">Computer-Aided Design (CAD)</span>
+            <span class="tag">SolidWorks</span>
+            <span class="tag">3D Printing</span>
+            <span class="tag">ESP32-S3 Microcontroller</span>
+            <span class="tag">Bluetooth Low Energy (BLE)</span>
+            <span class="tag">Flutter Development</span>
+            <span class="tag">Embedded Systems</span>
+            <span class="tag">Hardware Integration</span>
+            <span class="tag">User Testing</span>
+            <span class="tag">Accessibility Design</span>
+            <span class="tag">Team Collaboration</span>
+        </div>
+    </section>
+
+    <!-- Impact -->
+    <section class="accent-bg">
+        <div class="section-label">IMPACT & SIGNIFICANCE</div>
+        <h2>Advancing accessibility through technology</h2>
+        <p>This project represents a significant step towards creating more inclusive and accessible technology for visually impaired individuals. By developing a portable, affordable alternative to expensive commercial braille displays, we demonstrated that assistive technology can be both effective and accessible to a broader population.</p>
+        
+        <div class="quote-box">
+            <p>"This device proves that innovative assistive technology doesn't have to be prohibitively expensive. By leveraging modern embedded systems and wireless communication, we can create solutions that empower visually impaired individuals to access information independently."</p>
+        </div>
+        
+        <h3>Key Achievements</h3>
+        <ul>
+            <li>Created functional prototype demonstrating viability of vibrotactile braille output</li>
+            <li>Achieved stable BLE communication with zero dropped connections during testing</li>
+            <li>Designed ergonomic, portable form factor that users found comfortable for extended use</li>
+            <li>Implemented real-time text-to-braille encoding with asynchronous message handling</li>
+            <li>Validated mechanical durability through rigorous drop testing</li>
+            <li>Developed cross-platform mobile application supporting both iOS and Android</li>
+            <li>Contributed to advancing affordable assistive technology for the visually impaired community</li>
+        </ul>
+        
+        <p>This project deepened our understanding of assistive technology design, embedded systems development, and the critical importance of user-centered design when creating products for individuals with disabilities. The work demonstrates potential for future commercial development and real-world deployment to improve accessibility for millions of visually impaired individuals worldwide.</p>
+    </section>
+
+    <!-- Project Links -->
+    <section class="colored-bg" style="text-align: center;">
+        <h2 style="margin-bottom: 40px;">View the complete project</h2>
+        <div style="display: flex; gap: 30px; justify-content: center; align-items: center; flex-wrap: wrap;">
+            <a href="https://github.com/febrobo/Digital-Braille-Reader" target="_blank" class="cta-button">
+                View Project on GitHub →
+            </a>
+            <a href="media/doc/DigitalBrailleReader.pdf" download class="cta-button" style="background: #FF6B6B; color: white; border-color: #FF6B6B;">
+                Download Project Report (PDF) ↓
+            </a>
+        </div>
+        <p style="margin-top: 30px; font-size: 1rem; opacity: 0.7;">Complete technical documentation, code, CAD files, and comprehensive project report</p>
+    </section>
+
+    <script>
+        // No theme toggle - case study style
+    </script>
+</body>
+</html>

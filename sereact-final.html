@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sereact Robotic Cell - Febin Wilson</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            color: #000000;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            opacity: 0.7;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 70vh;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #000000;
+            padding: 0 10%;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 10%;
+        }
+
+        .white-bg {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .dark-bg {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .colored-bg {
+            background: #f5f5f5;
+            color: #000000;
+        }
+
+        .accent-bg {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: #ffffff;
+        }
+
+        .pink-bg {
+            background: #fef5f5;
+            color: #000000;
+        }
+
+        /* Meta Bar */
+        .meta-bar {
+            background: #0a0a0a;
+            color: #ffffff;
+            padding: 50px 10%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 50px;
+            text-align: center;
+        }
+
+        .meta-item h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .meta-item p {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #FF6B6B;
+        }
+
+        /* Section Headers */
+        .section-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: #e74c3c;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .dark-bg .section-label {
+            color: #FF6B6B;
+        }
+
+        .accent-bg .section-label {
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        .colored-bg .section-label {
+            color: #e74c3c;
+        }
+
+        .pink-bg .section-label {
+            color: #e74c3c;
+        }
+
+        h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 30px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin: 40px 0 20px 0;
+            color: #FF6B6B;
+        }
+
+        .white-bg h3,
+        .colored-bg h3,
+        .pink-bg h3 {
+            color: #e74c3c;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 20px;
+        }
+
+        li {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        /* Quote Box */
+        .quote-box {
+            background: #ffffff;
+            padding: 60px;
+            border-radius: 20px;
+            margin: 60px 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-bg .quote-box {
+            background: #2a2a2a;
+            box-shadow: none;
+        }
+
+        .accent-bg .quote-box {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: none;
+        }
+
+        .quote-box p {
+            font-size: 1.5rem;
+            font-style: italic;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .dark-bg .quote-box p,
+        .accent-bg .quote-box p {
+            color: #ffffff;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            color: #333;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .dark-bg .tag {
+            background: #333;
+            color: #00d4ff;
+        }
+
+        .accent-bg .tag {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #2a2a2a;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            color: #f8f8f2;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .white-bg .code-block,
+        .colored-bg .code-block,
+        .pink-bg .code-block {
+            background: #2a2a2a;
+        }
+
+        /* Grid Layouts */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            padding: 40px;
+            background: #f8f8f8;
+            border-radius: 15px;
+        }
+
+        .dark-bg .feature-card {
+            background: #2a2a2a;
+        }
+
+        .accent-bg .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #e74c3c;
+        }
+
+        .dark-bg .feature-card h3 {
+            color: #00d4ff;
+        }
+
+        .accent-bg .feature-card h3 {
+            color: #ffffff;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: transparent;
+            border: 2px solid #FF6B6B;
+            color: #FF6B6B;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #FF6B6B;
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        /* Image Placeholder */
+        .image-section {
+            width: 100%;
+            max-width: 900px;
+            margin: 60px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-section img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @media (max-width: 968px) {
+            section {
+                padding: 60px 5%;
+            }
+
+            .meta-bar {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="projects.html" class="back-btn">← Back to Projects</a>
+    
+    <!-- Hero -->
+    <div class="hero">
+        <h1>Robotic Cell Control System for Warehouse Automation</h1>
+    </div>
+
+    <!-- Meta Bar -->
+    <div class="meta-bar">
+        <div class="meta-item">
+            <h3>ROLE</h3>
+            <p>ROS Developer</p>
+        </div>
+        <div class="meta-item">
+            <h3>COMPANY</h3>
+            <p>Sereact GmbH</p>
+        </div>
+        <div class="meta-item">
+            <h3>DURATION</h3>
+            <p>Sep 2025 - Nov 2025</p>
+        </div>
+        <div class="meta-item">
+            <h3>TEAM SIZE</h3>
+            <p>Individual</p>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <section class="white-bg">
+        <div class="section-label">PROJECT OVERVIEW</div>
+        <h2>Autonomous bin picking through intelligent cell management</h2>
+        <p>This project involved planning and programming the control system for a Robotic Cell designed for bin picking applications in warehouse environments. A robotic cell is a secured environment where a robotic arm safely operates, equipped with safety features including doors for human access and stack-lights to communicate system status. The system interfaces with warehouse operations through a Human-Machine Interface (HMI), enabling seamless interaction between workers and the automated picking system.</p>
+        <p>The challenge was to create a robust, real-time control system that manages multiple subsystems including API communication with the Warehouse Management System (WMS), barcode scanning, safety monitoring (door handles and emergency buttons), and visual status indication through stack-lights. The entire system was built using ROS 2 (Robot Operating System 2), ensuring modularity, reliability, and industry-standard communication protocols.</p>
+        <p>Working independently over three months, I developed six major components that work together to create a complete warehouse automation solution: an API server for WMS communication, ROS 2 nodes for hardware integration (scanner, door, emergency button, stack-light), and a comprehensive HMI for real-time monitoring and control. This project also provided valuable hands-on experience with Docker containerization, a critical skill for modern robotics deployment.</p>
+        
+        <div class="tags">
+            <span class="tag">ROS 2 Humble</span>
+            <span class="tag">Python</span>
+            <span class="tag">Flask Web Framework</span>
+            <span class="tag">API Development</span>
+            <span class="tag">HTTP/JSON</span>
+            <span class="tag">Docker</span>
+            <span class="tag">System Integration</span>
+            <span class="tag">Warehouse Automation</span>
+            <span class="tag">HMI Development</span>
+            <span class="tag">Safety Systems</span>
+        </div>
+    </section>
+
+    <!-- Background -->
+    <section class="dark-bg">
+        <div class="section-label">BACKGROUND</div>
+        <h2>Understanding the robotic picking cell</h2>
+        <p>In modern warehouse operations, robotic cells represent a critical intersection of automation, safety, and efficiency. A robotic picking cell is a secured environment where industrial robotic arms perform bin picking operations—selecting items from containers and placing them in designated locations. These cells are designed with multiple safety and communication features to ensure smooth integration with human workers and existing warehouse management systems.</p>
+        
+        <h3>Key Components of a Robotic Cell</h3>
+        <ul>
+            <li><strong>Robotic Arm:</strong> The core automation element that performs physical picking operations</li>
+            <li><strong>Safety Enclosure:</strong> Physical barriers with access doors that protect workers from the robot's operational space</li>
+            <li><strong>Barcode Scanners:</strong> Vision systems that identify items during the picking process</li>
+            <li><strong>Stack-Light:</strong> Visual indicator showing system status (operational, paused, emergency)</li>
+            <li><strong>Emergency Stop Button:</strong> Critical safety feature for immediate robot shutdown</li>
+            <li><strong>Door Sensors:</strong> Monitor access points to ensure worker safety</li>
+            <li><strong>HMI (Human-Machine Interface):</strong> Touchscreen display for monitoring and control</li>
+        </ul>
+        
+        <p>The Warehouse Management System (WMS) orchestrates picking operations by sending requests to the robotic cell, specifying which items to pick and their quantities. The cell must respond with accurate status updates and completion confirmations, creating a continuous feedback loop that keeps warehouse operations running efficiently.</p>
+    </section>
+
+    <!-- Challenge -->
+    <section class="white-bg">
+        <div class="section-label">DESIGN CHALLENGE</div>
+        <h2>Building a complete control system from scratch</h2>
+        <p>The primary challenge was to design and implement a complete control system that could manage all aspects of the robotic cell while maintaining reliability, safety, and real-time responsiveness. Unlike simulation environments, this system would interface with real hardware and production systems, requiring robust error handling and fail-safe mechanisms.</p>
+        
+        <h3>Technical Challenges</h3>
+        <ul>
+            <li><strong>Real-time Integration:</strong> The system needed to process API requests, monitor hardware states, and update the HMI simultaneously without delays</li>
+            <li><strong>Safety-Critical Operations:</strong> Emergency stops and door sensors required immediate response—any delay could compromise worker safety</li>
+            <li><strong>API Design:</strong> Creating both synchronous and asynchronous communication patterns between the WMS and robotic cell</li>
+            <li><strong>State Management:</strong> Coordinating multiple subsystems (door state, emergency button, scanner, stack-light) to determine overall system status</li>
+            <li><strong>Mock Hardware Development:</strong> Since physical hardware wasn't available, I had to create realistic simulations that accurately represented sensor behaviors</li>
+        </ul>
+        
+        <p>The solution required implementing ROS 2's publisher-subscriber architecture, HTTP server capabilities, and a real-time HMI—all working together in a cohesive system that could be deployed in a production warehouse environment.</p>
+    </section>
+
+    <!-- Task 1: API Call Handler -->
+    <section class="colored-bg">
+        <div class="section-label">TASK 1: API COMMUNICATION</div>
+        <h2>WMS integration through REST API</h2>
+        <p>The Warehouse Management System communicates with the robotic cell through API calls, sending picking requests and receiving completion confirmations. I implemented a complete server-side solution that handles these requests according to Sereact's specifications.</p>
+        
+        <h3>Pick Request Endpoint</h3>
+        <p>When the WMS needs items picked, it sends a POST request to the cell:</p>
+        
+        <div class="code-block">
+            <pre>HTTP POST http://&lt;ip-address&gt;:8080/pick
+JSON Request Body:
+{
+  "pickId": 123,
+  "quantity": 4
+}</pre>
+        </div>
+        
+        <p>The server receives this request and queues the picking operation. The system can be implemented either synchronously (blocking until completion) or asynchronously (immediate response with later confirmation).</p>
+        
+        <h3>Pick Confirmation Endpoint</h3>
+        <p>Once the robot completes the picking operation, the cell sends a confirmation back to the WMS:</p>
+        
+        <div class="code-block">
+            <pre>HTTP POST http://&lt;ip-address&gt;:8081/confirmPick
+JSON Request Body:
+{
+  "pickId": 123,
+  "pickSuccessful": true,
+  "errorMessage": null,
+  "itemBarcode": 123
+}</pre>
+        </div>
+        
+        <h3>Implementation Highlights</h3>
+        <ul>
+            <li>Built HTTP server using Python's Flask framework</li>
+            <li>Implemented request validation and error handling</li>
+            <li>Created mock picking logic that simulates robot operations</li>
+            <li>Integrated barcode scanner data into pick confirmations</li>
+            <li>Designed response format that includes success status and error messages</li>
+        </ul>
+        
+        <p>The <code>itemBarcode</code> field in the confirmation comes from the barcode scanner node, ensuring that the correct item was picked. If picking fails, the <code>errorMessage</code> provides diagnostic information to help warehouse operators troubleshoot issues.</p>
+    </section>
+
+    <!-- Task 2: Scanner -->
+    <section class="dark-bg">
+        <div class="section-label">TASK 2: BARCODE SCANNING</div>
+        <h2>Scanner ROS 2 node implementation</h2>
+        <p>Barcode scanning is essential for verifying that the robot picks the correct items. In production environments, multiple barcode scanners read item numbers during the picking process, making this data available to the control system for validation.</p>
+        
+        <h3>System Requirements</h3>
+        <p>I implemented a ROS 2 node that continuously publishes randomly generated 5-digit barcodes to simulate scanner operation. Additionally, I created a service that returns the most recently scanned barcode without requiring any input parameters.</p>
+        
+        <h3>Architecture</h3>
+        <ul>
+            <li><strong>Publisher:</strong> Continuously generates and publishes 5-digit barcodes at regular intervals</li>
+            <li><strong>Service:</strong> Provides on-demand access to the latest scanned barcode</li>
+            <li><strong>Topic:</strong> <code>/barcode_scan</code> for publishing barcode data</li>
+            <li><strong>Message Type:</strong> String containing the barcode number</li>
+        </ul>
+        
+        <p>In the actual implementation, the publisher would receive data from physical barcode scanners connected via USB or network. The service allows other nodes (particularly the API handler) to retrieve the current barcode when confirming pick operations.</p>
+        
+        <h3>Use in Pick Confirmation</h3>
+        <p>When a pick operation completes, the API handler calls the scanner service to retrieve the barcode, which is then included in the confirmation message sent back to the WMS. This creates an audit trail confirming that the correct item was picked.</p>
+    </section>
+
+    <!-- Task 3: Door Handle -->
+    <section class="white-bg">
+        <div class="section-label">TASK 3: SAFETY MONITORING</div>
+        <h2>Door handle state management</h2>
+        <p>Safety is paramount in robotic cells. All cells include at least one access door that allows workers to enter for maintenance or manual operations. The control system must constantly monitor door state to prevent robot operation when doors are open.</p>
+        
+        <h3>Safety Logic</h3>
+        <p>The fundamental safety rule is: <strong>When the door is open, the robot must not move</strong>. All pick requests received while the door is open must be responded to with <code>pickSuccessful: false</code>.</p>
+        
+        <h3>ROS 2 Node Implementation</h3>
+        <ul>
+            <li><strong>Publisher:</strong> Continuously publishes door state (boolean value)</li>
+            <li><strong>True:</strong> Door is closed (safe to operate)</li>
+            <li><strong>False:</strong> Door is open (operation prohibited)</li>
+            <li><strong>Service:</strong> Allows toggling door state for testing purposes</li>
+        </ul>
+        
+        <h3>Mock Operation</h3>
+        <p>Since physical door sensors weren't available, I implemented a service that can manually change the door state. This allows testing the system's response to door events:</p>
+        <ul>
+            <li>Calling the service toggles between open (false) and closed (true)</li>
+            <li>Alternatively, killing and restarting the node changes the state</li>
+            <li>The API handler subscribes to door state and blocks operations when necessary</li>
+        </ul>
+        
+        <p>In production, this node would interface with actual door sensors (magnetic switches, optical sensors, or mechanical limit switches) to detect the real door position.</p>
+    </section>
+
+    <!-- Task 4: Emergency Button -->
+    <section class="colored-bg">
+        <div class="section-label">TASK 4: EMERGENCY STOP SYSTEM</div>
+        <h2>Emergency button monitoring and control</h2>
+        <p>Emergency stop buttons (e-buttons) are critical safety devices that allow workers to immediately halt all robotic motion. Once pressed, the robot remains stopped until the button is explicitly released by an operator.</p>
+        
+        <h3>Safety Protocol</h3>
+        <p>When the emergency button is pressed:</p>
+        <ul>
+            <li>The robot stops all motion immediately</li>
+            <li>The cell enters emergency mode and cannot return to operational mode</li>
+            <li>All pick requests are rejected with <code>pickSuccessful: false</code></li>
+            <li>The system remains in this state until the button is released</li>
+        </ul>
+        
+        <h3>ROS 2 Node Design</h3>
+        <ul>
+            <li><strong>Publisher:</strong> Continuously publishes e-button state (boolean)</li>
+            <li><strong>True:</strong> Button is pressed (emergency state)</li>
+            <li><strong>False:</strong> Button is not pressed (normal operation possible)</li>
+            <li><strong>Services:</strong> Two services for testing
+                <ul>
+                    <li>Press Service: Sets state to true (simulates button press)</li>
+                    <li>Release Service: Sets state to false (simulates button release)</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <h3>Integration with Cell Control</h3>
+        <p>The API handler subscribes to the emergency button state. When an emergency is detected, the handler immediately rejects all incoming pick requests and updates the HMI to show emergency status. This ensures that warehouse operators are immediately aware of safety issues.</p>
+    </section>
+
+    <!-- Task 5: Stack Light -->
+    <section class="dark-bg">
+        <div class="section-label">TASK 5: VISUAL STATUS INDICATION</div>
+        <h2>Stack-light control system</h2>
+        <p>Stack-lights are industrial visual indicators that use colored lights to communicate system status at a glance. Workers can quickly assess the cell's operational state from across the warehouse floor without needing to check the HMI.</p>
+        
+        <h3>Status Indicators</h3>
+        <p>The stack-light displays three states based on the overall cell condition:</p>
+        <ul>
+            <li><strong>0 (Green):</strong> Operational - Door closed, no emergency, system receiving requests</li>
+            <li><strong>1 (Yellow):</strong> Paused - Door open, robot cannot move but no emergency</li>
+            <li><strong>-1 (Red):</strong> Emergency - E-button pressed, immediate attention required</li>
+        </ul>
+        
+        <h3>State Determination Logic</h3>
+        <p>The stack-light node subscribes to both the door handle and emergency button topics. It applies the following logic to determine which color to display:</p>
+        <ul>
+            <li>If emergency button is pressed → Red (-1)</li>
+            <li>Else if door is open → Yellow (1)</li>
+            <li>Else (door closed, no emergency) → Green (0)</li>
+        </ul>
+        
+        <h3>ROS 2 Implementation</h3>
+        <ul>
+            <li><strong>Subscribers:</strong> Listens to door state and emergency button topics</li>
+            <li><strong>Publisher:</strong> Publishes current stack-light value (0, 1, or -1)</li>
+            <li><strong>Real-time Updates:</strong> Changes immediately when door or emergency state changes</li>
+        </ul>
+        
+        <p>This creates a dynamic visual feedback system that helps warehouse workers understand cell status without detailed technical knowledge. Green means everything is working, yellow means wait for the door to close, and red means immediate intervention is needed.</p>
+    </section>
+
+    <!-- Task 6: HMI -->
+    <section class="white-bg">
+        <div class="section-label">TASK 6: HUMAN-MACHINE INTERFACE</div>
+        <h2>Real-time monitoring dashboard</h2>
+        <p>The HMI serves as the primary interface between warehouse workers and the robotic cell. It provides real-time visibility into system status and displays critical information about ongoing operations.</p>
+        
+        <h3>Required Information Display</h3>
+        <ul>
+            <li><strong>Request Information:</strong> Current pick request details (pickId, quantity)</li>
+            <li><strong>Response Information:</strong> Last pick confirmation sent to WMS (success/failure, barcode)</li>
+            <li><strong>Emergency Button State:</strong> Current e-button status (pressed/released)</li>
+            <li><strong>Door Handle State:</strong> Current door position (open/closed)</li>
+            <li><strong>Stack-Light State:</strong> Visual indicator with color representation
+                <ul>
+                    <li>Green circle/square for operational (0)</li>
+                    <li>Yellow circle/square for paused (1)</li>
+                    <li>Red circle/square for emergency (-1)</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <h3>Technology Stack</h3>
+        <p>I implemented the HMI using Flask web framework for the backend and vanilla JavaScript for the frontend:</p>
+        <ul>
+            <li><strong>Flask Server:</strong> Python web framework serving the dashboard on port 5000</li>
+            <li><strong>HTML/CSS:</strong> Clean, professional interface with dark theme optimized for warehouse environments</li>
+            <li><strong>JavaScript:</strong> Real-time data updates using fetch API</li>
+            <li><strong>ROS 2 Integration:</strong> Subscribers to all system topics for live monitoring</li>
+            <li><strong>Responsive Design:</strong> Works on various screen sizes from tablets to large monitors</li>
+        </ul>
+        
+        <h3>Real-Time Updates</h3>
+        <p>The HMI subscribes to all relevant ROS 2 topics and updates the display immediately when changes occur. This ensures that operators always see current system status without needing to refresh or manually check. The interface provides immediate feedback when pick requests arrive, when operations complete, or when safety systems activate.</p>
+    </section>
+
+    <!-- Media Section -->
+    <section class="colored-bg">
+        <div class="section-label">SYSTEM DEMONSTRATION</div>
+        <h2>HMI dashboard in action</h2>
+        <p style="margin-bottom: 50px;">Screenshots from the live system showing real-time monitoring of safety states, stack-light indicators, and pick operations. The dashboard updates automatically as the system processes requests and monitors safety conditions.</p>
+        
+        <!-- Dashboard States Grid -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-bottom: 60px;">
+            <div style="background: #ffffff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <img src="media/pic/caution-door-state-pick.png" alt="Paused State" style="width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="margin-top: 20px;">
+                    <h3 style="color: #ffcc00; font-size: 1.3rem; margin-bottom: 10px;">⚠️ Paused State</h3>
+                    <p style="color: #333; margin: 0;">Stack-Light: <strong>Yellow (Code 1)</strong></p>
+                    <p style="color: #333; margin: 5px 0;">Emergency Button: NOT PRESSED</p>
+                    <p style="color: #333; margin: 5px 0;">Door: <strong>OPEN</strong></p>
+                    <p style="color: #666; font-size: 0.95rem; margin-top: 12px; font-style: italic;">Robot paused - door open for worker safety. Pick #123 failed: "Door opened during operation"</p>
+                </div>
+            </div>
+            
+            <div style="background: #ffffff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <img src="media/pic/emergency-button-pick.png" alt="Emergency State" style="width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="margin-top: 20px;">
+                    <h3 style="color: #ff0000; font-size: 1.3rem; margin-bottom: 10px;">🚨 Emergency State</h3>
+                    <p style="color: #333; margin: 0;">Stack-Light: <strong>Red (Code -1)</strong></p>
+                    <p style="color: #333; margin: 5px 0;">Emergency Button: <strong>PRESSED</strong></p>
+                    <p style="color: #333; margin: 5px 0;">Door: OPEN</p>
+                    <p style="color: #666; font-size: 0.95rem; margin-top: 12px; font-style: italic;">Critical state - emergency stop activated. Robot halted immediately. Pick operations rejected.</p>
+                </div>
+            </div>
+            
+            <div style="background: #ffffff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <img src="media/pic/operational-withpickstatus.png" alt="Operational State" style="width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="margin-top: 20px;">
+                    <h3 style="color: #00cc00; font-size: 1.3rem; margin-bottom: 10px;">✅ Operational State</h3>
+                    <p style="color: #333; margin: 0;">Stack-Light: <strong>Green (Code 0)</strong></p>
+                    <p style="color: #333; margin: 5px 0;">Emergency Button: NOT PRESSED</p>
+                    <p style="color: #333; margin: 5px 0;">Door: CLOSED</p>
+                    <p style="color: #666; font-size: 0.95rem; margin-top: 12px; font-style: italic;">System operational - processing picks successfully. Recent history shows success (barcode 86088) and one safety failure.</p>
+                </div>
+            </div>
+            
+            <div style="background: #ffffff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <img src="media/pic/pick-status.png" alt="Pick Operations Detail" style="width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="margin-top: 20px;">
+                    <h3 style="color: #4a90e2; font-size: 1.3rem; margin-bottom: 10px;">📦 Pick Operations Detail</h3>
+                    <p style="color: #333; margin: 0;">Recent Picks: 5 operations tracked</p>
+                    <p style="color: #333; margin: 5px 0;">Success: <span style="color: #00cc00; font-weight: bold;">4 ✓</span> | Failed: <span style="color: #ff0000; font-weight: bold;">1 ✗</span></p>
+                    <p style="color: #333; margin: 5px 0;">Barcodes: 14214, 81321, 61029, 18942</p>
+                    <p style="color: #666; font-size: 0.95rem; margin-top: 12px; font-style: italic;">Detailed pick history with timestamps, barcodes, and failure reasons ("Robot could not locate/grasp item").</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #ffffff; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+            <h3 style="color: #e74c3c; margin-bottom: 20px;">Key Dashboard Features</h3>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                <div>
+                    <h4 style="color: #4a90e2; margin-bottom: 10px;">🎨 Visual Stack-Light Indicator</h4>
+                    <p style="color: #333; margin: 0;">Animated circles showing operational status with color-coded states and pulsing animation for emergency conditions</p>
+                </div>
+                <div>
+                    <h4 style="color: #4a90e2; margin-bottom: 10px;">🔒 Safety Status Cards</h4>
+                    <p style="color: #333; margin: 0;">Real-time monitoring of emergency button and door state with instant color-coded feedback</p>
+                </div>
+                <div>
+                    <h4 style="color: #4a90e2; margin-bottom: 10px;">📋 Pick History Tracking</h4>
+                    <p style="color: #333; margin: 0;">Recent operations log with success/failure indicators, item barcodes, and detailed error messages</p>
+                </div>
+                <div>
+                    <h4 style="color: #4a90e2; margin-bottom: 10px;">⏱️ Timestamp Logging</h4>
+                    <p style="color: #333; margin: 0;">All events tracked with precise timing for complete audit trails and operational analysis</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Video Demonstration -->
+        <div style="margin-top: 80px;">
+            <h3 style="text-align: center; color: #e74c3c; margin-bottom: 30px;">System Demonstration Video</h3>
+            <p style="text-align: center; margin-bottom: 40px; font-size: 1.1rem;">Watch the complete system in operation - from startup to pick processing with safety monitoring</p>
+            
+            <div style="max-width: 900px; margin: 0 auto; background: #ffffff; padding: 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <video controls style="width: 100%; border-radius: 10px;">
+                    <source src="media/video/sereact-demo.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p style="text-align: center; margin-top: 20px; font-size: 1rem; color: #666;">Full system demonstration showing ROS 2 nodes, Flask HMI, API communication, and safety system integration</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Architecture -->
+    <section class="dark-bg">
+        <div class="section-label">SYSTEM ARCHITECTURE</div>
+        <h2>Integrated control system design</h2>
+        <p>The complete system integrates six major components that communicate through ROS 2's publish-subscribe architecture and service calls. This modular design ensures that each component can be developed, tested, and maintained independently while contributing to the overall system functionality.</p>
+        
+        <h3>Component Interaction Flow</h3>
+        <ul>
+            <li><strong>WMS → API Handler:</strong> Pick requests arrive via HTTP POST</li>
+            <li><strong>API Handler → Scanner:</strong> Service call to retrieve current barcode</li>
+            <li><strong>Door/Emergency → Stack-Light:</strong> State changes update visual indicator</li>
+            <li><strong>All Nodes → HMI:</strong> Real-time data streams for monitoring</li>
+            <li><strong>API Handler → WMS:</strong> Pick confirmation via HTTP POST</li>
+        </ul>
+        
+        <h3>Safety Integration</h3>
+        <p>The system implements a layered safety approach where multiple components contribute to operational decisions:</p>
+        <ul>
+            <li>Door sensor provides the first level of safety (physical barrier)</li>
+            <li>Emergency button provides immediate shutdown capability</li>
+            <li>Stack-light provides visual status for situational awareness</li>
+            <li>API handler checks all safety conditions before accepting requests</li>
+            <li>HMI displays all safety states for operator awareness</li>
+        </ul>
+        
+        <h3>Deployment & Containerization</h3>
+        <p>The system includes Docker containerization for simplified deployment:</p>
+        <ul>
+            <li><strong>Single Command Deployment:</strong> <code>docker-compose up</code> starts all six components</li>
+            <li><strong>Port Management:</strong> Automatically exposes HMI (5000), WMS receive (8080), and confirmation (8081) ports</li>
+            <li><strong>Host Networking:</strong> Ensures ROS 2 DDS communication works seamlessly</li>
+            <li><strong>Environment Consistency:</strong> Same behavior across development and production machines</li>
+            <li><strong>Easy Scaling:</strong> Can deploy multiple cells with different port configurations</li>
+        </ul>
+    </section>
+
+    <!-- Key Features -->
+    <section class="pink-bg">
+        <div class="section-label">KEY FEATURES</div>
+        <h2>System capabilities</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>WMS Integration</h3>
+                <p>Complete REST API implementation with JSON request/response handling, supporting both synchronous and asynchronous operation modes for warehouse system communication</p>
+            </div>
+            <div class="feature-card">
+                <h3>Real-Time Safety Monitoring</h3>
+                <p>Continuous monitoring of door state and emergency button with immediate response to safety events, ensuring worker protection at all times</p>
+            </div>
+            <div class="feature-card">
+                <h3>Barcode Verification</h3>
+                <p>Integrated scanner system that validates picked items against requests, creating an audit trail for inventory accuracy</p>
+            </div>
+            <div class="feature-card">
+                <h3>Visual Status System</h3>
+                <p>Stack-light controller that translates complex system states into simple color codes (green/yellow/red) for at-a-glance status awareness</p>
+            </div>
+            <div class="feature-card">
+                <h3>Comprehensive HMI</h3>
+                <p>Web-based monitoring dashboard showing all system states in real-time, enabling operators to quickly assess and respond to operational conditions</p>
+            </div>
+            <div class="feature-card">
+                <h3>Modular ROS 2 Architecture</h3>
+                <p>Independent nodes for each subsystem, allowing easy maintenance, testing, and future expansion of capabilities</p>
+            </div>
+            <div class="feature-card">
+                <h3>Docker Containerization</h3>
+                <p>Complete containerized deployment with Docker and Docker Compose, ensuring consistent behavior across environments and simplified warehouse deployment</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Implementation -->
+    <section class="white-bg">
+        <div class="section-label">TECHNICAL IMPLEMENTATION</div>
+        <h2>Development approach and technologies</h2>
+        
+        <h3>ROS 2 Humble</h3>
+        <p>I chose ROS 2 Humble as the foundation for this project because it's the recommended distribution for production systems (ROS Noetic is reaching end-of-life). ROS 2 provides several advantages over ROS 1:</p>
+        <ul>
+            <li>Better real-time performance through DDS middleware</li>
+            <li>Improved security features for industrial applications</li>
+            <li>Native support for multiple platforms</li>
+            <li>More reliable service call mechanisms</li>
+        </ul>
+        
+        <h3>Python Implementation</h3>
+        <p>All ROS 2 nodes were implemented in Python for rapid development and easy integration with web frameworks. Python's extensive library ecosystem provided the perfect tools for this project:</p>
+        <ul>
+            <li><strong>Flask Web Framework:</strong> Used for both the WMS API server (ports 8080/8081) and the HMI dashboard (port 5000)</li>
+            <li><strong>Requests Library:</strong> HTTP client for sending pick confirmations back to WMS</li>
+            <li><strong>Threading:</strong> Background task processing for concurrent pick operations</li>
+            <li><strong>Random Module:</strong> Simulating pick success rates and barcode generation</li>
+            <li><strong>ROS 2 Python Client (rclpy):</strong> All node implementations and pub/sub communication</li>
+        </ul>
+        
+        <h3>Docker Containerization</h3>
+        <p>During this project, I learned and implemented Docker containerization to ensure consistent deployment across different environments. This was a significant learning experience that added production-readiness to the system:</p>
+        <ul>
+            <li><strong>Dockerfile Creation:</strong> Built custom Docker image with ROS 2 Humble, Python dependencies, and system packages</li>
+            <li><strong>Docker Compose:</strong> Orchestrated multi-port networking (5000 for HMI, 8080/8081 for API endpoints)</li>
+            <li><strong>Network Configuration:</strong> Implemented host networking mode for seamless ROS 2 communication</li>
+            <li><strong>Port Mapping:</strong> Exposed multiple services through container port forwarding</li>
+            <li><strong>Environment Isolation:</strong> Ensured the system runs identically on development and production machines</li>
+        </ul>
+        <p>The Docker implementation allows the entire robotic cell control system to be deployed with a single command, eliminating "it works on my machine" problems and simplifying warehouse deployment.</p>
+        
+        <h3>Version Control & Documentation</h3>
+        <p>The project followed software engineering best practices:</p>
+        <ul>
+            <li>Git version control for tracking all changes</li>
+            <li>Comprehensive README with setup and installation instructions</li>
+            <li>Documentation of dependencies and required packages</li>
+            <li>Clear instructions for running each component</li>
+            <li>Code comments explaining complex logic</li>
+            <li>Docker deployment documentation for production environments</li>
+        </ul>
+        
+        <h3>Testing Approach</h3>
+        <p>Since physical hardware wasn't available, I created mock implementations that accurately simulate real-world behavior:</p>
+        <ul>
+            <li>Random barcode generation simulating scanner input</li>
+            <li>Service-based state toggling for door and emergency button</li>
+            <li>Simulated picking delays to mimic robot operation time</li>
+            <li>Error injection capabilities for testing failure handling</li>
+        </ul>
+    </section>
+
+    <!-- Results -->
+    <section class="accent-bg">
+        <div class="section-label">RESULTS & DELIVERABLES</div>
+        <h2>Complete warehouse automation solution</h2>
+        <p>Over the course of the 3-month development period, I successfully delivered a complete, fully functional control system ready for integration with real warehouse hardware. The project demonstrates end-to-end functionality from API communication to safety monitoring to user interface, with all components tested and verified in operation.</p>
+        
+        <div class="quote-box">
+            <p>"This project showcases the ability to design and implement production-ready robotic control systems, integrating multiple subsystems into a cohesive solution that prioritizes safety, reliability, and real-time performance."</p>
+        </div>
+        
+        <h3>System Verification</h3>
+        <p>The system was thoroughly tested and verified to work correctly with all components operating simultaneously:</p>
+        <ul>
+            <li><strong>API Communication:</strong> Successfully handles pick requests on port 8080 and sends confirmations on port 8081</li>
+            <li><strong>Safety System Integration:</strong> Emergency button and door sensors correctly prevent operations during unsafe conditions</li>
+            <li><strong>Stack-Light Controller:</strong> Accurately aggregates safety states into visual indicators (green/yellow/red)</li>
+            <li><strong>Barcode Scanner:</strong> Generates and provides barcodes for pick confirmations</li>
+            <li><strong>HMI Dashboard:</strong> Real-time updates reflecting all system states, pick operations, and safety conditions</li>
+            <li><strong>Pick Processing:</strong> Concurrent handling of multiple pick requests with proper safety monitoring throughout operations</li>
+        </ul>
+        
+        <h3>Key Achievements</h3>
+        <ul>
+            <li>Implemented all six required components on schedule</li>
+            <li>Created working mock hardware simulations for testing</li>
+            <li>Built fully functional web-based HMI with Flask showing real-time system state</li>
+            <li>Developed comprehensive documentation for deployment</li>
+            <li>Learned and implemented Docker containerization for production-ready deployment</li>
+            <li>Ensured code quality through Git version control</li>
+            <li>Designed system architecture following ROS 2 best practices</li>
+            <li>Verified complete system operation with all components working together</li>
+        </ul>
+        
+        <p>The system is now ready for deployment in warehouse environments. Once connected to physical hardware (barcode scanners, door sensors, emergency buttons, stack-lights), the nodes can operate without modification, demonstrating the robustness of the implementation. The Docker containerization ensures consistent deployment across different warehouse sites. The HMI dashboard screenshots shown above are from the actual working system, demonstrating real-time monitoring of safety states and pick operations.</p>
+    </section>
+
+    <!-- Skills -->
+    <section class="dark-bg">
+        <div class="section-label">SKILLS DEMONSTRATED</div>
+        <h2>Technical expertise applied</h2>
+        
+        <!-- Skills Bars -->
+        <div style="margin: 50px 0 60px 0;">
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #fff;">ROS 2 (Robot Operating System)</p>
+                <div style="background: #333; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #FF6B6B 0%, #e74c3c 100%); width: 95%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #fff;">Python Programming</p>
+                <div style="background: #333; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #FF6B6B 0%, #e74c3c 100%); width: 93%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #fff;">API Design & Development (REST/HTTP)</p>
+                <div style="background: #333; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #FF6B6B 0%, #e74c3c 100%); width: 90%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #fff;">System Architecture & Integration</p>
+                <div style="background: #333; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #FF6B6B 0%, #e74c3c 100%); width: 88%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #fff;">Web Development (HTML/CSS/JavaScript)</p>
+                <div style="background: #333; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #FF6B6B 0%, #e74c3c 100%); width: 82%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #fff;">Docker & Containerization</p>
+                <div style="background: #333; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #FF6B6B 0%, #e74c3c 100%); width: 80%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #fff;">Safety Systems Design</p>
+                <div style="background: #333; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #FF6B6B 0%, #e74c3c 100%); width: 85%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #fff;">Version Control (Git)</p>
+                <div style="background: #333; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #FF6B6B 0%, #e74c3c 100%); width: 87%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #fff;">Technical Documentation</p>
+                <div style="background: #333; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #FF6B6B 0%, #e74c3c 100%); width: 90%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #fff;">Independent Project Management</p>
+                <div style="background: #333; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #FF6B6B 0%, #e74c3c 100%); width: 88%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tags">
+            <span class="tag">ROS 2 Humble</span>
+            <span class="tag">Python</span>
+            <span class="tag">Flask Web Framework</span>
+            <span class="tag">REST API</span>
+            <span class="tag">HTTP/JSON</span>
+            <span class="tag">Docker</span>
+            <span class="tag">Docker Compose</span>
+            <span class="tag">System Integration</span>
+            <span class="tag">Safety Systems</span>
+            <span class="tag">HMI Development</span>
+            <span class="tag">Web Technologies</span>
+            <span class="tag">Git Version Control</span>
+            <span class="tag">Technical Documentation</span>
+            <span class="tag">Warehouse Automation</span>
+            <span class="tag">Threading & Concurrency</span>
+        </div>
+    </section>
+
+    <!-- Project Links -->
+    <section class="colored-bg" style="text-align: center;">
+        <h2 style="margin-bottom: 40px;">View the complete project</h2>
+        <a href="https://github.com/febrobo/sereact-robotic-cell-control" target="_blank" class="cta-button">
+            View Project on GitHub →
+        </a>
+        <p style="margin-top: 30px; font-size: 1rem; opacity: 0.7;">Complete ROS 2 implementation with code, documentation, and deployment instructions</p>
+    </section>
+
+</body>
+</html>

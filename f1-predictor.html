@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Championship Prediction - Febin Wilson</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            color: #000000;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            opacity: 0.7;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 70vh;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #000000;
+            padding: 0 10%;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 10%;
+        }
+
+        .white-bg {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .dark-bg {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .colored-bg {
+            background: #f5f5f5;
+            color: #000000;
+        }
+
+        .accent-bg {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: #ffffff;
+        }
+
+        .pink-bg {
+            background: #fef5f5;
+            color: #000000;
+        }
+
+        /* Meta Bar */
+        .meta-bar {
+            background: #0a0a0a;
+            color: #ffffff;
+            padding: 50px 10%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 50px;
+            text-align: center;
+        }
+
+        .meta-item h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .meta-item p {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #FF6B6B;
+        }
+
+        /* Section Headers */
+        .section-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: #e74c3c;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .dark-bg .section-label {
+            color: #FF6B6B;
+        }
+
+        .accent-bg .section-label {
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        .colored-bg .section-label {
+            color: #e74c3c;
+        }
+
+        .pink-bg .section-label {
+            color: #e74c3c;
+        }
+
+        h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 30px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin: 40px 0 20px 0;
+            color: #FF6B6B;
+        }
+
+        .white-bg h3,
+        .colored-bg h3,
+        .pink-bg h3 {
+            color: #e74c3c;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 20px;
+        }
+
+        li {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        /* Champion Box */
+        .champion-box {
+            background: #ffffff;
+            padding: 60px;
+            border-radius: 20px;
+            margin: 60px 0;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .champion-box h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #e74c3c;
+        }
+
+        .champion-box p {
+            font-size: 1.8rem;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .champion-box .champion-name {
+            font-size: 3.5rem;
+            color: #e74c3c;
+            font-weight: 700;
+            margin: 30px 0;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .stat-card {
+            background: #f8f8f8;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .dark-bg .stat-card {
+            background: #2a2a2a;
+        }
+
+        .accent-bg .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+            color: #333;
+        }
+
+        .accent-bg .stat-label {
+            color: #333;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            color: #333;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .dark-bg .tag {
+            background: #333;
+            color: #00d4ff;
+        }
+
+        .accent-bg .tag {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .pink-bg .tag {
+            background: #fff;
+            color: #333;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Image Container */
+        .image-container {
+            margin: 50px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .dark-bg .image-container {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .accent-bg .image-container {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border-left: 4px solid #e74c3c;
+            overflow-x: auto;
+        }
+
+        .dark-bg .code-block {
+            background: #2a2a2a;
+            border-left-color: #FF6B6B;
+        }
+
+        .accent-bg .code-block {
+            background: rgba(255, 255, 255, 0.95);
+            border-left-color: #e74c3c;
+        }
+
+        .code-block pre {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+            color: #333;
+        }
+
+        .dark-bg .code-block pre {
+            color: #e0e0e0;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            padding: 40px;
+            background: #f8f8f8;
+            border-radius: 15px;
+        }
+
+        .dark-bg .feature-card {
+            background: #2a2a2a;
+        }
+
+        .accent-bg .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .pink-bg .feature-card {
+            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            margin-top: 0;
+            color: #e74c3c;
+        }
+
+        .dark-bg .feature-card h3 {
+            color: #00d4ff;
+        }
+
+        .accent-bg .feature-card h3 {
+            color: #ffffff;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: transparent;
+            border: 2px solid #FF6B6B;
+            color: #FF6B6B;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #FF6B6B;
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 968px) {
+            section {
+                padding: 60px 5%;
+            }
+
+            .meta-bar {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="projects.html" class="back-btn">← Back to Projects</a>
+    
+    <!-- Hero -->
+    <div class="hero">
+        <h1>F1 2025 Championship Winner Prediction Using Machine Learning</h1>
+    </div>
+
+    <!-- Meta Bar -->
+    <div class="meta-bar">
+        <div class="meta-item">
+            <h3>ROLE</h3>
+            <p>ML Engineer</p>
+        </div>
+        <div class="meta-item">
+            <h3>CONTEXT</h3>
+            <p>Personal Project</p>
+        </div>
+        <div class="meta-item">
+            <h3>DURATION</h3>
+            <p>Sep 2025 - Nov 2025</p>
+        </div>
+        <div class="meta-item">
+            <h3>TECH STACK</h3>
+            <p>Python • ML</p>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <section class="white-bg">
+        <div class="section-label">PROJECT OVERVIEW</div>
+        <h2>Predicting the 2025 F1 World Champion with data-driven insights</h2>
+        <p>With only 4 races remaining in the 2025 Formula 1 season, the championship battle between Lando Norris, Oscar Piastri, and Max Verstappen reached unprecedented intensity—separated by just 1 point at the top. This project leverages machine learning and historical race data to predict who will claim the World Championship title.</p>
+        <p>Built from scratch over 2 months, this comprehensive system combines 6 years of F1 data (2020-2025), advanced feature engineering, and ensemble prediction methods to forecast race-by-race outcomes for the remaining Grand Prix events. The project demonstrates end-to-end ML pipeline development, from data collection and cleaning through model training, evaluation, and deployment.</p>
+        <p>The prediction system achieved 70.77% accuracy in win prediction and successfully identified the championship winner with 93.8% confidence using an ensemble approach combining Random Forest models with rule-based scoring algorithms.</p>
+        
+        <div class="tags">
+            <span class="tag">Python</span>
+            <span class="tag">Machine Learning</span>
+            <span class="tag">Random Forest</span>
+            <span class="tag">Feature Engineering</span>
+            <span class="tag">Data Analysis</span>
+            <span class="tag">Pandas/NumPy</span>
+            <span class="tag">Scikit-learn</span>
+            <span class="tag">XGBoost</span>
+            <span class="tag">Matplotlib/Seaborn</span>
+        </div>
+    </section>
+
+    <!-- Final Prediction -->
+    <section class="accent-bg">
+        <div class="section-label">FINAL PREDICTION</div>
+        <div class="champion-box">
+            <h2>🏆 Predicted 2025 F1 World Champion</h2>
+            <p class="champion-name">Lando Norris</p>
+            <p style="font-size: 1.3rem;">431 Points (Margin: +23 over Oscar Piastri)</p>
+            <p style="font-size: 1.1rem; margin-top: 20px; color: #666;">Confidence: 93.8/100 ✅ HIGH</p>
+        </div>
+        
+        <h3 style="color: #ffffff; text-align: center; margin-top: 60px; margin-bottom: 30px;">Complete Prediction Output</h3>
+        <p style="text-align: center; margin-bottom: 30px;">Terminal output showing ensemble scores, race-by-race predictions, and final championship verdict from the ML system.</p>
+        <div class="image-container">
+            <img src="media/pic/f1_output.png" alt="F1 Championship Prediction Terminal Output" loading="lazy">
+        </div>
+        
+        <div class="stats-grid" style="margin-top: 50px;">
+            <div class="stat-card" style="background: rgba(255,255,255,0.95);">
+                <div class="stat-number" style="color: #e74c3c;">70.77%</div>
+                <div class="stat-label" style="color: #333;">Win Prediction Accuracy</div>
+            </div>
+            <div class="stat-card" style="background: rgba(255,255,255,0.95);">
+                <div class="stat-number" style="color: #e74c3c;">78.46%</div>
+                <div class="stat-label" style="color: #333;">Podium Prediction Accuracy</div>
+            </div>
+            <div class="stat-card" style="background: rgba(255,255,255,0.95);">
+                <div class="stat-number" style="color: #e74c3c;">2.48</div>
+                <div class="stat-label" style="color: #333;">Position Prediction MAE</div>
+            </div>
+            <div class="stat-card" style="background: rgba(255,255,255,0.95);">
+                <div class="stat-number" style="color: #e74c3c;">380</div>
+                <div class="stat-label" style="color: #333;">Race Results Analyzed</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visualizations -->
+    <section class="white-bg">
+        <div class="section-label">DATA VISUALIZATIONS</div>
+        <h2>9 comprehensive charts revealing championship dynamics</h2>
+        <p>The project generated 9 publication-quality visualizations (300 DPI) that provide deep insights into driver performance, championship progression, and predictive model behavior. Each visualization was carefully designed to communicate complex statistical relationships in an intuitive format.</p>
+        
+        <h3>Championship Dashboard</h3>
+        <p>The centerpiece visualization combines current standings, season statistics, and points progression into a single comprehensive view. This dashboard reveals the incredibly tight battle at the top—Lando leading by just 1 point with 4 races remaining.</p>
+        <div class="image-container">
+            <img src="media/pic/championship_dashboard.png" alt="F1 2025 Championship Dashboard" loading="lazy">
+        </div>
+        
+        <h3>Points Progression Throughout 2025</h3>
+        <p>Tracking the season-long battle reveals how McLaren drivers (Lando and Oscar) progressively closed the gap on Max Verstappen. The convergence in recent races creates the most competitive championship finish in years.</p>
+        <div class="image-container">
+            <img src="media/pic/points_progression_2025.png" alt="Points Progression" loading="lazy">
+        </div>
+        
+        <h3>Points Gap Evolution - The Championship Battle</h3>
+        <p>This visualization shows Max Verstappen's dominance early in the season (95+ point lead) and McLaren's dramatic resurgence. The green shaded region represents the "close championship" zone (within 25 points), highlighting the unprecedented competitiveness of the final races.</p>
+        <div class="image-container">
+            <img src="media/pic/points_gap_evolution.png" alt="Points Gap Evolution" loading="lazy">
+        </div>
+        
+        <h3>Recent Form - Last 5 Races</h3>
+        <p>Performance in the last 5 races is one of the strongest predictors of future success. This chart shows consistent podium finishes (P1-P3) for both McLaren drivers, while Max experienced a catastrophic P17 finish at Race 22—a critical factor in the championship prediction.</p>
+        <div class="image-container">
+            <img src="media/pic/recent_form.png" alt="Recent Form Analysis" loading="lazy">
+        </div>
+        
+        <h3>Feature Importance Analysis</h3>
+        <p>Random Forest feature importance reveals which factors most strongly predict race wins. Starting Grid position dominates (0.16 importance), followed by Last 5 Races Average and Season Win Count. This insight validates the model's focus on recent performance and qualifying position.</p>
+        <div class="image-container">
+            <img src="media/pic/feature_importance.png" alt="ML Feature Importance" loading="lazy">
+        </div>
+        
+        <h3>Track-Specific Performance Heatmap</h3>
+        <p>Different circuits favor different drivers. This heatmap identifies strengths and weaknesses: Oscar excels at technical circuits, while Lando struggles at Canada and Netherlands. These track-specific patterns inform race-by-race predictions for remaining events.</p>
+        <div class="image-container">
+            <img src="media/pic/track_performance_heatmap.png" alt="Track Performance Heatmap" loading="lazy">
+        </div>
+        
+        <h3>Historical Performance Trends (2020-2025)</h3>
+        <p>Average finishing position over 6 years reveals driver development trajectories. Oscar Piastri's remarkable rookie season (2.6 avg finish in 2025) contrasts with Lando's gradual improvement and Max's consistent excellence.</p>
+        <div class="image-container">
+            <img src="media/pic/avg_finish_by_year.png" alt="Average Finishing Position by Year" loading="lazy">
+        </div>
+        
+        <h3>Total Career Wins (2020-2025)</h3>
+        <p>Historical dominance doesn't guarantee current success. Max Verstappen's 73 career wins dwarf his competitors (Lando: 12, Oscar: 11), yet 2025 tells a different story with McLaren's improved car performance.</p>
+        <div class="image-container">
+            <img src="media/pic/win_distribution.png" alt="Total Race Wins Distribution" loading="lazy">
+        </div>
+        
+        <h3>Model Performance: Confusion Matrix</h3>
+        <p>The win prediction model correctly identified 6 out of 11 actual wins (54.5% recall) with minimal false positives (5 false alarms out of 54 non-wins). The model prioritizes precision—when it predicts a win, it's usually correct.</p>
+        <div class="image-container">
+            <img src="media/pic/confusion_matrix_win.png" alt="Confusion Matrix" loading="lazy">
+        </div>
+    </section>
+
+    <!-- Technical Implementation -->
+    <section class="dark-bg">
+        <div class="section-label">TECHNICAL IMPLEMENTATION</div>
+        <h2>Building the ML pipeline from scratch</h2>
+        
+        <h3>1. Data Collection & Processing (data_analysis.py)</h3>
+        <p>The foundation of any ML project is clean, structured data. I collected race results, sprint results, qualifying data, and driver statistics from 2020-2025 across multiple CSV files with inconsistent formats.</p>
+        
+        <div class="code-block">
+            <pre>
+# Load and combine historical data from multiple seasons
+all_race_dfs = []
+for file_path in race_files:
+    temp_df = pd.read_csv(file_path)
+    # Add year column for tracking
+    if '2020' in file_path:
+        temp_df['Year'] = 2020
+    # ... (2021-2024)
+    all_race_dfs.append(temp_df)
+
+# Combine all race and sprint data
+complete_race_data = pd.concat([
+    all_races_historical, 
+    df_races_2025, 
+    all_sprints_historical, 
+    df_sprints_2025
+], ignore_index=True)
+
+# Filter for championship contenders
+drivers_of_interest = ["Lando Norris", "Oscar Piastri", "Max Verstappen"]
+drivers_all_years = complete_race_data[
+    complete_race_data['Driver'].isin(drivers_of_interest)
+]
+
+# Add championship labels (target variable)
+drivers_all_years['Champion'] = 0
+drivers_all_years.loc[
+    (drivers_all_years['Year'].isin([2021,2022,2023,2024])) & 
+    (drivers_all_years['Driver'] == 'Max Verstappen'), 
+    'Champion'
+] = 1
+            </pre>
+        </div>
+        
+        <p><strong>Key Challenge:</strong> CSV files across years had different column names and structures. Solution: Systematic column mapping and validation to ensure data consistency before merging 2,977 race results into a unified dataset.</p>
+        
+        <h3>2. Feature Engineering (feature_engineering.py)</h3>
+        <p>Raw race data isn't directly useful for ML models. I engineered 10 predictive features capturing track-specific performance, season momentum, and championship context.</p>
+        
+        <div class="code-block">
+            <pre>
+# Track-Specific Features: Historical performance at each circuit
+def get_track_avg_finish(driver_name, track_name, current_year, data):
+    driver_data = data[data['Driver'] == driver_name]
+    track_data = driver_data[driver_data['Track'] == track_name]
+    historical_data = track_data[track_data['Year'] < current_year]
+    
+    if not historical_data.empty:
+        positions = pd.to_numeric(historical_data['Position'], errors='coerce')
+        return positions.mean()
+    return None
+
+analysis_df['Track_Avg_Finish'] = analysis_df.apply(
+    lambda row: get_track_avg_finish(
+        row['Driver'], row['Track'], row['Year'], analysis_df
+    ), axis=1
+)
+
+# Season Momentum: Cumulative points and wins BEFORE each race
+analysis_df['Points_So_Far'] = analysis_df.groupby(['Driver', 'Year'])['Points'].cumsum()
+analysis_df['Points_So_Far'] = analysis_df.groupby(['Driver', 'Year'])['Points_So_Far'].shift(1).fillna(0)
+
+analysis_df['Season_Win_Count'] = analysis_df.groupby(['Driver', 'Year'])['Is_Win'].cumsum()
+analysis_df['Season_Win_Count'] = analysis_df.groupby(['Driver', 'Year'])['Season_Win_Count'].shift(1).fillna(0)
+
+# Recent Form: Rolling 5-race average
+analysis_df['Last_5_Races_Avg'] = analysis_df.groupby('Driver')['Position_Numeric'].transform(
+    lambda x: x.shift(1).rolling(window=5, min_periods=1).mean()
+)
+
+# Championship Context: Position and gap to leader
+analysis_df['Championship_Position'] = analysis_df.groupby(['Year', 'Race_Number'])['Points_So_Far'].rank(method='min', ascending=False)
+leader_points = analysis_df.groupby(['Year', 'Race_Number'])['Points_So_Far'].transform('max')
+analysis_df['Points_Gap_To_Leader'] = leader_points - analysis_df['Points_So_Far']
+            </pre>
+        </div>
+        
+        <p><strong>Key Innovation:</strong> The .shift(1) technique ensures we only use information available BEFORE each race, preventing data leakage. For example, we predict Race 10's outcome using only Races 1-9 statistics.</p>
+        
+        <h3>3. Model Training (model_training.py)</h3>
+        <p>I trained 3 specialized models using time-based train/test splits to simulate real-world prediction scenarios.</p>
+        
+        <div class="code-block">
+            <pre>
+# Time-based split: Train on 2020-2024, test on 2025
+train_mask = df_clean['Year'] < 2025
+test_mask = df_clean['Year'] == 2025
+
+X_train = X[train_mask]  # 194 samples
+X_test = X[test_mask]    # 65 samples
+
+# Model 1: Win Prediction (Classification)
+win_model = RandomForestClassifier(n_estimators=100, random_state=42, max_depth=10)
+win_model.fit(X_train, y_win_train)
+win_accuracy = accuracy_score(y_win_test, win_model.predict(X_test))
+# Result: 70.77% accuracy
+
+# Model 2: Podium Prediction (Classification)
+podium_model = RandomForestClassifier(n_estimators=100, random_state=42, max_depth=10)
+podium_model.fit(X_train, y_podium_train)
+podium_accuracy = accuracy_score(y_podium_test, podium_model.predict(X_test))
+# Result: 78.46% accuracy
+
+# Model 3: Position Prediction (Regression)
+position_model = RandomForestRegressor(n_estimators=100, random_state=42, max_depth=10)
+position_model.fit(X_train, y_position_train)
+position_mae = mean_absolute_error(y_position_test, position_model.predict(X_test))
+# Result: 2.48 positions MAE
+
+# Save models for deployment
+joblib.dump(win_model, 'models/win_prediction_model.pkl')
+joblib.dump(podium_model, 'models/podium_prediction_model.pkl')
+joblib.dump(position_model, 'models/position_prediction_model.pkl')
+            </pre>
+        </div>
+        
+        <p><strong>Why Random Forest?</strong> Random Forests excel at capturing non-linear relationships (e.g., "starting P1 vs P5 matters more than P15 vs P18") and provide built-in feature importance analysis. They're also robust to overfitting with proper parameter tuning.</p>
+    </section>
+
+    <!-- Championship Prediction Logic -->
+    <section class="white-bg">
+        <div class="section-label">PREDICTION SYSTEM</div>
+        <h2>Race-by-race forecasting and ensemble methods</h2>
+        
+        <h3>Predicting Remaining Races</h3>
+        <p>With 4 races and 2 sprints remaining (116 total points available), the system predicts each event individually using track-specific historical data and current form.</p>
+        
+        <div class="code-block">
+            <pre>
+remaining_races = [
+    {'name': 'Brazil', 'has_sprint': True},
+    {'name': 'Las Vegas', 'has_sprint': False},
+    {'name': 'Qatar', 'has_sprint': True},
+    {'name': 'Abu Dhabi', 'has_sprint': False}
+]
+
+for race in remaining_races:
+    # Get historical data for this track
+    track_data = df[(df['Track'] == race['name']) & 
+                    (df['Driver'].isin(drivers_of_interest))]
+    
+    for driver in drivers_of_interest:
+        driver_track = track_data[track_data['Driver'] == driver].iloc[-1:]
+        X_pred = driver_track[feature_columns]
+        
+        # Predict win probability and finishing position
+        win_prob = win_model.predict_proba(X_pred)[0][1]
+        pred_position = position_model.predict(X_pred)[0]
+        pred_position = max(1, min(20, round(pred_position)))
+        
+        # Convert position to points
+        points_map = {1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 
+                      6: 8, 7: 6, 8: 4, 9: 2, 10: 1}
+        race_points = points_map.get(int(pred_position), 0)
+        
+        # Add sprint points if applicable
+        if race['has_sprint']:
+            sprint_points_map = {1: 8, 2: 7, 3: 6, 4: 5, 
+                                 5: 4, 6: 3, 7: 2, 8: 1}
+            sprint_points = sprint_points_map.get(min(8, int(pred_position)), 0)
+            race_points += sprint_points
+        
+        predicted_points[driver] += race_points
+            </pre>
+        </div>
+        
+        <h3>Ensemble Prediction: ML + Rule-Based Scoring</h3>
+        <p>To increase confidence, I combined machine learning predictions (60% weight) with a rule-based scoring system (40% weight) that evaluates current points, win rate, consistency, and reliability.</p>
+        
+        <div class="code-block">
+            <pre>
+# Rule-Based Scoring System (predictor_algorithm.py)
+def calc_points_score(driver):
+    """Current championship points (40% of total)"""
+    max_points = max(d["points"] for d in current_standings.values())
+    return (current_standings[driver]["points"] / max_points) * 40
+
+def calc_winrate_score(driver):
+    """2025 season win rate (30% of total)"""
+    wins = current_season_performance[driver]["wins"][2025]
+    races = current_season_performance[driver]["seasons"][2025]
+    driver_winrate = wins / races
+    max_winrate = max(w["wins"][2025] / w["seasons"][2025] 
+                      for w in current_season_performance.values())
+    return (driver_winrate / max_winrate) * 30
+
+def calc_consist_score(driver):
+    """Average finish consistency (20% of total)"""
+    avg_finish = current_season_performance[driver]["avg_finish"]
+    min_avg = min(d["avg_finish"] for d in current_season_performance.values())
+    return (min_avg / avg_finish) * 20
+
+def calc_rel_score(driver):
+    """Reliability penalty for DNFs (10% of total)"""
+    dnfs = current_season_performance[driver]["DNFs"]
+    max_dnfs = max(d["DNFs"] for d in current_season_performance.values())
+    return (1 - (dnfs / max_dnfs)) * 10 if max_dnfs > 0 else 10
+
+# Combine ML and Rule-Based predictions
+ensemble_scores = {}
+for driver in drivers_of_interest:
+    ml_score = (predicted_final_points[driver] / max_predicted) * 100
+    rule_score = (calc_points_score(driver) + calc_winrate_score(driver) + 
+                  calc_consist_score(driver) + calc_rel_score(driver))
+    ensemble_scores[driver] = 0.6 * ml_score + 0.4 * rule_score
+            </pre>
+        </div>
+        
+        <p><strong>Ensemble Results:</strong></p>
+        <ul>
+            <li>Lando Norris: 93.8/100 (ML: 100.0, Rule-Based: 84.5)</li>
+            <li>Oscar Piastri: 92.8/100 (ML: 94.7, Rule-Based: 89.9)</li>
+            <li>Max Verstappen: 81.4/100 (ML: 83.8, Rule-Based: 77.7)</li>
+        </ul>
+        <p>Both methods agree: Lando Norris will win the 2025 championship.</p>
+    </section>
+
+    <!-- Challenges -->
+    <section class="dark-bg">
+        <div class="section-label">CHALLENGES & SOLUTIONS</div>
+        <h2>Overcoming technical obstacles</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Data Inconsistency</h3>
+                <p><strong>Challenge:</strong> CSV files from different seasons had varying column names, formats, and structures.</p>
+                <p><strong>Solution:</strong> Built a systematic data cleaning pipeline with column mapping, type conversion, and validation checks. Created a unified schema across all years.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Feature Engineering Complexity</h3>
+                <p><strong>Challenge:</strong> Needed features that capture track-specific patterns, season momentum, and avoid data leakage.</p>
+                <p><strong>Solution:</strong> Used .shift(1) to ensure only historical data informs predictions. Created rolling averages and cumulative statistics that simulate real-world availability.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Limited Training Data</h3>
+                <p><strong>Challenge:</strong> Only 194 samples for training (3 drivers × 5-6 years × ~13 races/year).</p>
+                <p><strong>Solution:</strong> Used Random Forest (handles small datasets well), restricted model depth (max_depth=10), and validated with time-based splits to prevent overfitting.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Visualization Scaling</h3>
+                <p><strong>Challenge:</strong> Initial charts had Y-axis congestion and poor readability—recent form chart was illegible.</p>
+                <p><strong>Solution:</strong> Dynamically adjusted Y-axis ranges based on actual data, inverted position axes (P1 at top), added annotations, and fixed NaN handling to prevent crashes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="pink-bg">
+        <div class="section-label">PROJECT FEATURES</div>
+        <h2>Complete ML system capabilities</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Data Pipeline</h3>
+                <p>Automated collection, cleaning, and merging of 380 race results from 6 CSV sources across 6 years with inconsistent formats.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Feature Engineering</h3>
+                <p>10 engineered features including track-specific performance, rolling 5-race averages, championship position, and points gap dynamics.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Multi-Model Training</h3>
+                <p>3 specialized Random Forest models (win, podium, position) with hyperparameter tuning achieving 70%+ accuracy.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Ensemble Prediction</h3>
+                <p>60% ML + 40% rule-based ensemble combining data-driven predictions with domain expertise for 93.8% confidence.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Race-by-Race Forecasting</h3>
+                <p>Predicts outcomes for 4 remaining races using track-specific historical data and current form analysis.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Comprehensive Visualizations</h3>
+                <p>9 publication-quality charts (300 DPI) revealing championship dynamics, model performance, and feature importance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results & Impact -->
+    <section class="accent-bg">
+        <div class="section-label">RESULTS & INSIGHTS</div>
+        <h2>What the data reveals about the championship</h2>
+        
+        <h3>Key Predictions</h3>
+        <ul>
+            <li><strong>Winner:</strong> Lando Norris (431 points, +23 margin)</li>
+            <li><strong>Brazil GP:</strong> Lando P3 (70.2% win probability), Oscar P3, Max P4</li>
+            <li><strong>Las Vegas GP:</strong> Lando P5, Max P5, Oscar P7</li>
+            <li><strong>Qatar GP:</strong> Oscar P3 (64% win prob), Lando P2, Max P6</li>
+            <li><strong>Abu Dhabi GP:</strong> Lando P2 (66% win prob), Max P5, Oscar P8</li>
+        </ul>
+        
+        <h3>Critical Insights</h3>
+        <ul>
+            <li><strong>Starting grid position is king:</strong> Feature importance analysis shows starting position (0.16) dominates all other factors. Qualifying performance determines race outcomes more than any other variable.</li>
+            <li><strong>Recent form matters more than history:</strong> Last 5 races average (0.14 importance) outweighs career statistics. Max's 73 career wins don't compensate for recent struggles.</li>
+            <li><strong>McLaren's car advantage is decisive:</strong> Both McLaren drivers consistently scoring podiums (Lando: 18/24, Oscar: 17/24) reflects superior machinery over Red Bull in 2025.</li>
+            <li><strong>Oscar's rookie excellence:</strong> 2.6 average finishing position in 2025 is extraordinary for a second-year driver, showcasing natural talent and McLaren's development program.</li>
+            <li><strong>Max's mid-season collapse:</strong> Points gap chart shows Max led by 95 points at Race 15, then suffered catastrophic results including P17 at Race 22—the turning point of the championship.</li>
+        </ul>
+        
+        <h3>Model Validation</h3>
+        <p>The 70.77% win prediction accuracy may seem modest, but F1 is inherently unpredictable due to mechanical failures, weather changes, and racing incidents. The model's strength lies in identifying general trends: it correctly recognizes McLaren's dominance and Max's decline.</p>
+        <p>The ensemble approach mitigates individual model weaknesses. While the ML model is data-driven, the rule-based system incorporates domain knowledge about consistency and reliability—both methods independently predicting Lando as champion validates the conclusion.</p>
+    </section>
+
+    <!-- Technical Deep Dive -->
+    <section class="dark-bg">
+        <div class="section-label">PROJECT ARCHITECTURE</div>
+        <h2>Complete system design</h2>
+        
+        <h3>File Structure</h3>
+        <div class="code-block">
+            <pre>
+f1_prediction/
+├── data/
+│   ├── races/              # Race results CSVs (2020-2025)
+│   ├── sprints/            # Sprint results CSVs (2021-2025)
+│   ├── race_qualifying/    # Qualifying CSVs
+│   ├── sprint_qualifying/  # Sprint qualifying CSVs
+│   └── processed/          # Cleaned datasets with features
+│       ├── drivers_championship_data_2020_2025.csv
+│       └── drivers_championship_data_WITH_FEATURES.csv
+│
+├── models/                 # Trained ML models
+│   ├── win_prediction_model.pkl
+│   ├── podium_prediction_model.pkl
+│   ├── position_prediction_model.pkl
+│   └── model_metadata.pkl
+│
+├── visualizations/         # Generated charts (9 PNG files)
+│   ├── championship_dashboard.png
+│   ├── points_progression_2025.png
+│   ├── feature_importance.png
+│   └── ... (6 more charts)
+│
+├── predictions/            # Final outputs
+│   ├── final_championship_prediction_2025.csv
+│   └── ensemble_scores_2025.csv
+│
+├── data_analysis.py        # Data collection & cleaning
+├── feature_engineering.py  # Feature creation pipeline
+├── model_training.py       # ML model training
+├── visualization_dashboard.py  # Chart generation
+├── predictor_algorithm.py  # Rule-based scoring
+├── final_championship_prediction.py  # Main prediction script
+└── run_complete_project.py # Master execution script
+            </pre>
+        </div>
+        
+        <h3>Technology Stack</h3>
+        <ul>
+            <li><strong>Data Processing:</strong> Pandas 1.5+, NumPy 1.23+</li>
+            <li><strong>Machine Learning:</strong> Scikit-learn 1.2+, XGBoost 1.7+</li>
+            <li><strong>Visualization:</strong> Matplotlib 3.6+, Seaborn 0.12+</li>
+            <li><strong>Model Persistence:</strong> Joblib 1.2+</li>
+            <li><strong>Development:</strong> Python 3.8+, Jupyter Notebooks (prototyping)</li>
+        </ul>
+        
+        <h3>Execution Workflow</h3>
+        <p>The master script (run_complete_project.py) orchestrates the entire pipeline in 6 steps, completing in ~4 seconds:</p>
+        <ol>
+            <li><strong>Environment Setup:</strong> Create directories, verify dependencies</li>
+            <li><strong>Data Analysis:</strong> Load 2,977 race results, filter to 380 samples for 3 drivers</li>
+            <li><strong>Feature Engineering:</strong> Generate 10 predictive features with time-aware logic</li>
+            <li><strong>Model Training:</strong> Train 3 Random Forest models with time-based splits</li>
+            <li><strong>Visualization:</strong> Generate 9 charts with proper scaling and annotations</li>
+            <li><strong>Final Prediction:</strong> Ensemble forecast with race-by-race breakdowns</li>
+        </ol>
+    </section>
+
+    <!-- Skills Demonstrated -->
+    <section class="white-bg">
+        <div class="section-label">SKILLS DEMONSTRATED</div>
+        <h2>Technical competencies applied</h2>
+        
+        <div style="margin: 50px 0 60px 0;">
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Python Programming & Data Manipulation</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 95%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Machine Learning (Random Forest, Classification/Regression)</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 90%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Feature Engineering & Data Preprocessing</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 92%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Data Visualization & Storytelling</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 88%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Statistical Analysis & Model Evaluation</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 85%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Software Engineering (Modular Code Architecture)</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 87%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Problem Solving & Debugging</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 93%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <p style="font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; color: #333;">Project Management & Documentation</p>
+                <div style="background: #e8e8e8; height: 10px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); width: 90%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tags">
+            <span class="tag">Python</span>
+            <span class="tag">Pandas/NumPy</span>
+            <span class="tag">Scikit-learn</span>
+            <span class="tag">Random Forest</span>
+            <span class="tag">XGBoost</span>
+            <span class="tag">Feature Engineering</span>
+            <span class="tag">Data Visualization</span>
+            <span class="tag">Matplotlib/Seaborn</span>
+            <span class="tag">Model Evaluation</span>
+            <span class="tag">Time Series Analysis</span>
+            <span class="tag">Statistical Analysis</span>
+            <span class="tag">Ensemble Methods</span>
+        </div>
+    </section>
+
+    <!-- GitHub Link -->
+    <section class="colored-bg" style="text-align: center;">
+        <h2 style="margin-bottom: 40px;">Explore the complete project</h2>
+        <div style="display: flex; gap: 30px; justify-content: center; align-items: center; flex-wrap: wrap;">
+            <a href="https://github.com/febrobo/F1-2025-Championship-Winner-Prediction-Using-Machine-Learning" target="_blank" class="cta-button">
+                View Code on GitHub →
+            </a>
+        </div>
+        <p style="margin-top: 30px; font-size: 1rem; opacity: 0.7;">Complete code, data pipeline, trained models, and all 9 visualizations</p>
+    </section>
+
+</body>
+</html>
